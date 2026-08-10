@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F3A5F">
+<title>용돈 통장</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F3EA;
+    --paper-2:#EFE9D8;
+    --ink:#23262B;
+    --ink-soft:#5B5A52;
+    --rule:#D8D0BC;
+    --deposit:#2F6F4E;
+    --deposit-bg:#E4EEE6;
+    --withdraw:#B4432D;
+    --withdraw-bg:#F5E5DF;
+    --accent:#1F3A5F;
+    --accent-2:#2B4E7A;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:96px;
+  }
+  .brand{ font-family:'Noto Serif KR',serif; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:-0.02em; }
+
+  header.app-header{
+    background:var(--accent);
+    color:var(--paper);
+    padding:22px 20px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.app-header::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:radial-gradient(circle at 6px 0, transparent 5px, var(--accent) 5.5px);
+    background-size:16px 16px;
+    background-position:-8px -8px;
+    opacity:.12;
+  }
+  header.app-header h1{
+    font-family:'Noto Serif KR',serif;
+    font-size:1.5rem;
+    margin:0 0 2px;
+    font-weight:700;
+    position:relative;
+  }
+  header.app-header p{ margin:0; font-size:.8rem; opacity:.7; position:relative; }
+
+  .passbook{
+    margin:16px;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 1px 3px rgba(35,38,43,.08), 0 8px 20px -12px rgba(35,38,43,.25);
+    display:flex;
+    overflow:hidden;
+    border:1px solid var(--rule);
+  }
+  .passbook-stub{
+    width:22px; background:var(--paper-2); border-right:1px dashed var(--rule);
+    display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; padding:14px 0;
+  }
+  .passbook-stub span{ width:7px;height:7px;border-radius:50%; background:var(--paper); border:1px solid var(--rule); }
+  .passbook-body{ flex:1; padding:18px 18px 16px; }
+  .passbook-row{ display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; }
+  .passbook-row + .passbook-row{ border-top:1px solid var(--paper-2); }
+  .passbook-row .label{ font-size:.8rem; color:var(--ink-soft); }
+  .passbook-row .value{ font-size:1.05rem; font-weight:600; }
+  .passbook-row.total .value{ font-size:1.65rem; font-weight:700; }
+  .passbook-row.total .label{ font-size:.85rem; }
+  .v-deposit{ color:var(--deposit); }
+  .v-withdraw{ color:var(--withdraw); }
+
+  .budget-bar{ margin-top:12px; height:8px; border-radius:5px; background:var(--paper-2); overflow:hidden; }
+  .budget-bar-fill{ height:100%; background:var(--accent-2); border-radius:5px; transition:width .3s; }
+  .budget-line{ display:flex; justify-content:space-between; font-size:.72rem; color:var(--ink-soft); margin-top:6px; }
+
+  .section-head{
+    display:flex; justify-content:space-between; align-items:center; margin:20px 16px 8px;
+  }
+  .section-head h3{ font-family:'Noto Serif KR',serif; font-size:.98rem; margin:0; }
+  .link-btn{ background:none;border:none;color:var(--accent-2);font-size:.78rem;font-weight:600;cursor:pointer;padding:0; }
+
+  .cat-list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
+  .cat-card{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:11px 14px; }
+  .cat-card-top{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:6px; }
+  .cat-card-top .name{ font-weight:700; }
+  .cat-card-top .nums{ font-size:.78rem; color:var(--ink-soft); }
+  .cat-card-top .nums b{ color:var(--ink); font-family:'IBM Plex Mono',monospace; }
+  .cat-bar{ height:6px; border-radius:4px; background:var(--paper-2); overflow:hidden; }
+  .cat-bar-fill{ height:100%; border-radius:4px; background:var(--accent-2); }
+  .cat-bar-fill.over{ background:var(--withdraw); }
+  .cat-empty{ padding:8px; }
+
+  .tabs{ display:flex; gap:6px; margin:0 16px 12px; background:var(--paper-2); border-radius:10px; padding:4px; }
+  .tabs button{ flex:1; border:none; background:transparent; padding:9px 0; border-radius:8px; font-size:.85rem; font-weight:600; color:var(--ink-soft); cursor:pointer; }
+  .tabs button.active{ background:#fff; color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08); }
+
+  .list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
+  .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); font-size:.85rem; background:#fff; border:1px dashed var(--rule); border-radius:12px; }
+  .item{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
+  .item .tag{ width:8px; align-self:stretch; border-radius:4px; flex-shrink:0; }
+  .tag.d{ background:var(--deposit); } .tag.w{ background:var(--withdraw); }
+  .item .info{ flex:1; min-width:0; }
+  .item .title{ font-weight:600; font-size:.95rem; }
+  .item .meta{ font-size:.72rem; color:var(--ink-soft); margin-top:2px; }
+  .item .catchip{ display:inline-block; background:var(--paper-2); color:var(--ink-soft); font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; }
+  .item .amt{ font-size:1rem; font-weight:700; white-space:nowrap; }
+  .item .del{ background:none;border:none;color:var(--ink-soft);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
+
+  .fab{ position:fixed; right:20px; bottom:24px; width:58px; height:58px; border-radius:50%; background:var(--accent); color:var(--paper); border:none; font-size:1.8rem; line-height:1; box-shadow:0 6px 18px rgba(31,58,95,.4); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+  .sheet-overlay{ position:fixed; inset:0; background:rgba(35,38,43,.45); display:none; align-items:flex-end; justify-content:center; z-index:20; }
+  .sheet-overlay.open{ display:flex; }
+  .sheet{ background:var(--paper); width:100%; max-width:480px; border-radius:18px 18px 0 0; padding:18px 20px calc(20px + env(safe-area-inset-bottom)); max-height:88vh; overflow:auto; }
+  .sheet h2{ font-family:'Noto Serif KR',serif; font-size:1.15rem; margin:2px 0 16px; display:flex; justify-content:space-between; align-items:center; }
+  .type-switch{ display:flex; gap:8px; margin-bottom:14px; }
+  .type-switch button{ flex:1; padding:12px 0; border-radius:10px; border:1.5px solid var(--rule); background:#fff; font-weight:700; font-size:.9rem; cursor:pointer; color:var(--ink-soft); }
+  .type-switch button.sel.d{ background:var(--deposit-bg); border-color:var(--deposit); color:var(--deposit); }
+  .type-switch button.sel.w{ background:var(--withdraw-bg); border-color:var(--withdraw); color:var(--withdraw); }
+  label{ font-size:.78rem; color:var(--ink-soft); display:block; margin:12px 0 5px; }
+  input, textarea{ width:100%; border:1.5px solid var(--rule); border-radius:10px; padding:11px 12px; font-size:.95rem; background:#fff; color:var(--ink); font-family:inherit; }
+  input.mono{ font-family:'IBM Plex Mono',monospace; }
+  .sheet-actions{ display:flex; gap:8px; margin-top:18px; }
+  .btn{ flex:1; padding:13px 0; border-radius:10px; border:none; font-weight:700; font-size:.92rem; cursor:pointer; }
+  .btn.primary{ background:var(--accent); color:var(--paper); }
+  .btn.ghost{ background:var(--paper-2); color:var(--ink-soft); }
+  .btn.small{ flex:none; padding:8px 14px; font-size:.8rem; }
+  .close-x{ background:none;border:none;font-size:1.2rem;color:var(--ink-soft);cursor:pointer; }
+
+  .cat-manage-row{ display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+  .cat-manage-row input{ flex:1; }
+  .cat-manage-row input.amt-in{ max-width:120px; }
+  .cat-manage-row button{ background:none;border:none;color:var(--withdraw);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
+  .cat-manage-add{ display:flex; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); }
+
+  .toast{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:30px; font-size:.82rem; opacity:0; pointer-events:none; transition:opacity .25s; z-index:30; }
+  .toast.show{ opacity:1; }
+
+  .setup{ margin:16px; background:#fff; border:1px solid var(--rule); border-radius:12px; padding:16px; font-size:.82rem; color:var(--ink-soft); line-height:1.6; }
+  .setup input{ margin-top:8px; }
+  .setup .btn{ margin-top:10px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <h1>용돈 통장</h1>
+  <p id="dateLabel">-</p>
+</header>
+
+<div id="setupBox" class="setup" style="display:none;">
+  Google Sheets 연동 주소(웹앱 URL)가 아직 설정되지 않았어요. Apps Script 배포 후 발급받은 URL을 붙여넣어 주세요.
+  <input id="apiUrlInput" type="text" placeholder="https://script.google.com/macros/s/xxxx/exec">
+  <button class="btn primary" onclick="saveApiUrl()">연결하기</button>
+</div>
+
+<div class="passbook">
+  <div class="passbook-stub">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="passbook-body">
+    <div class="passbook-row total">
+      <span class="label">현재 잔액</span>
+      <span class="value mono" id="balanceValue">0원</span>
+    </div>
+    <div class="passbook-row">
+      <span class="label">이번 달 입금</span>
+      <span class="value mono v-deposit" id="monthDeposit">+0원</span>
+    </div>
+    <div class="passbook-row">
+      <span class="label">이번 달 출금</span>
+      <span class="value mono v-withdraw" id="monthWithdraw">-0원</span>
+    </div>
+    <div class="budget-bar"><div class="budget-bar-fill" id="budgetFill" style="width:0%"></div></div>
+    <div class="budget-line">
+      <span id="budgetText">카테고리 예산 미설정</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-head">
+  <h3>카테고리별 현황 (이번 달)</h3>
+  <button class="link-btn" onclick="openCatManage()">카테고리 관리</button>
+</div>
+<div class="cat-list" id="catList"><div class="cat-empty empty">카테고리를 등록하면 여기에 표시돼요.</div></div>
+
+<div class="tabs">
+  <button class="active" data-filter="all" onclick="setFilter('all')">전체</button>
+  <button data-filter="deposit" onclick="setFilter('deposit')">입금</button>
+  <button data-filter="withdraw" onclick="setFilter('withdraw')">출금</button>
+</div>
+
+<div class="list" id="list"><div class="empty">불러오는 중...</div></div>
+
+<button class="fab" onclick="openSheet()">+</button>
+
+<!-- 내역 추가 -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet">
+    <h2>내역 추가 <button class="close-x" onclick="closeSheet()">✕</button></h2>
+    <div class="type-switch">
+      <button id="btnDeposit" class="sel d" onclick="selectType('deposit')">입금</button>
+      <button id="btnWithdraw" onclick="selectType('withdraw')">출금</button>
+    </div>
+    <label>날짜</label>
+    <input id="fDate" type="date">
+    <label>카테고리</label>
+    <input id="fCategory" list="categoryOptions" placeholder="예: 식비, 교통비, 구독비용">
+    <datalist id="categoryOptions"></datalist>
+    <label>항목</label>
+    <input id="fTitle" type="text" placeholder="예: 편의점, 지하철, 넷플릭스">
+    <label>금액</label>
+    <input id="fAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
+    <label>메모 (선택)</label>
+    <textarea id="fMemo" rows="2" placeholder="메모"></textarea>
+    <div class="sheet-actions">
+      <button class="btn ghost" onclick="closeSheet()">취소</button>
+      <button class="btn primary" onclick="submitEntry()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 카테고리 관리 -->
+<div class="sheet-overlay" id="catOverlay" onclick="if(event.target===this)closeCatManage()">
+  <div class="sheet">
+    <h2>카테고리 예산 관리 <button class="close-x" onclick="closeCatManage()">✕</button></h2>
+    <div id="catManageList"></div>
+    <div class="cat-manage-add">
+      <input id="newCatName" placeholder="새 카테고리명">
+      <input id="newCatBudget" class="mono amt-in" type="number" inputmode="numeric" placeholder="월예산">
+      <button class="btn primary small" onclick="addCategory()">추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const LS_API_KEY = 'ledger_api_url';
+let API_URL = localStorage.getItem(LS_API_KEY) || '';
+let transactions = [];
+let categories = []; // [{category, budget}]
+let currentFilter = 'all';
+let currentType = 'deposit';
+
+const fmt = n => Math.round(n).toLocaleString('ko-KR') + '원';
+const todayStr = () => new Date().toISOString().slice(0,10);
+
+document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
+document.getElementById('fDate').value = todayStr();
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+function saveApiUrl(){
+  const v = document.getElementById('apiUrlInput').value.trim();
+  if(!v) return;
+  localStorage.setItem(LS_API_KEY, v);
+  API_URL = v;
+  document.getElementById('setupBox').style.display = 'none';
+  loadData();
+}
+
+function checkSetup(){
+  if(!API_URL){
+    document.getElementById('setupBox').style.display = 'block';
+    document.getElementById('list').innerHTML = '<div class="empty">먼저 상단에서 시트 연동 주소를 등록해주세요.</div>';
+    return false;
+  }
+  return true;
+}
+
+async function loadData(){
+  if(!checkSetup()) return;
+  document.getElementById('list').innerHTML = '<div class="empty">불러오는 중...</div>';
+  try{
+    const res = await fetch(API_URL + '?t=' + Date.now());
+    const data = await res.json();
+    transactions = data.transactions || [];
+    categories = data.categories || [];
+    render();
+  }catch(err){
+    document.getElementById('list').innerHTML = '<div class="empty">불러오기에 실패했어요. 연동 주소를 확인해주세요.</div>';
+  }
+}
+
+function currentMonthKey(){ return new Date().toISOString().slice(0,7); }
+
+function render(){
+  const ym = currentMonthKey();
+
+  let balance = 0, mDeposit = 0, mWithdraw = 0;
+  const catSpend = {};
+  transactions.forEach(t=>{
+    const amt = Number(t.amount)||0;
+    if(t.type==='deposit') balance += amt; else balance -= amt;
+    if((t.date||'').slice(0,7) === ym){
+      if(t.type==='deposit') mDeposit += amt; else mWithdraw += amt;
+      if(t.type==='withdraw' && t.category){
+        catSpend[t.category] = (catSpend[t.category]||0) + amt;
+      }
+    }
+  });
+
+  document.getElementById('balanceValue').textContent = fmt(balance);
+  document.getElementById('monthDeposit').textContent = '+' + fmt(mDeposit);
+  document.getElementById('monthWithdraw').textContent = '-' + fmt(mWithdraw);
+
+  const totalBudget = categories.reduce((s,c)=>s+(Number(c.budget)||0),0);
+  if(totalBudget > 0){
+    const pct = Math.min(100, (mWithdraw/totalBudget)*100);
+    document.getElementById('budgetFill').style.width = pct + '%';
+    document.getElementById('budgetFill').style.background = pct >= 100 ? 'var(--withdraw)' : 'var(--accent-2)';
+    document.getElementById('budgetText').textContent = `전체 예산 ${fmt(totalBudget)} 중 ${fmt(Math.max(0,totalBudget-mWithdraw))} 남음`;
+  } else {
+    document.getElementById('budgetFill').style.width = '0%';
+    document.getElementById('budgetText').textContent = '카테고리 예산 미설정';
+  }
+
+  // 카테고리별 현황
+  const catListEl = document.getElementById('catList');
+  if(categories.length === 0){
+    catListEl.innerHTML = '<div class="cat-empty empty">카테고리를 등록하면 여기에 표시돼요.</div>';
+  } else {
+    catListEl.innerHTML = categories.map(c=>{
+      const spent = catSpend[c.category] || 0;
+      const budget = Number(c.budget)||0;
+      const pct = budget>0 ? Math.min(100,(spent/budget)*100) : (spent>0?100:0);
+      const over = budget>0 && spent>budget;
+      return `
+        <div class="cat-card">
+          <div class="cat-card-top">
+            <span class="name">${escapeHtml(c.category)}</span>
+            <span class="nums"><b>${fmt(spent)}</b> / ${budget>0?fmt(budget):'예산없음'}</span>
+          </div>
+          <div class="cat-bar"><div class="cat-bar-fill ${over?'over':''}" style="width:${pct}%"></div></div>
+        </div>`;
+    }).join('');
+  }
+
+  // 카테고리 자동완성 목록 (등록된 카테고리 + 내역에서 쓰인 카테고리)
+  const allCats = new Set(categories.map(c=>c.category));
+  transactions.forEach(t=>{ if(t.category) allCats.add(t.category); });
+  document.getElementById('categoryOptions').innerHTML = Array.from(allCats).map(c=>`<option value="${escapeHtml(c)}">`).join('');
+
+  // 내역 목록
+  const filtered = transactions
+    .filter(t => currentFilter==='all' ? true : t.type===currentFilter)
+    .sort((a,b)=> (b.date||'').localeCompare(a.date||'') || (b.id-a.id));
+
+  const list = document.getElementById('list');
+  if(filtered.length===0){
+    list.innerHTML = '<div class="empty">아직 내역이 없어요.<br>오른쪽 아래 + 버튼으로 추가해보세요.</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(t=>`
+    <div class="item">
+      <div class="tag ${t.type==='deposit'?'d':'w'}"></div>
+      <div class="info">
+        <div class="title">${escapeHtml(t.title||'(제목없음)')}</div>
+        <div class="meta">${t.date}${t.memo? ' · '+escapeHtml(t.memo):''}</div>
+        ${t.category?`<span class="catchip">${escapeHtml(t.category)}</span>`:''}
+      </div>
+      <div class="amt ${t.type==='deposit'?'v-deposit':'v-withdraw'} mono">${t.type==='deposit'?'+':'-'}${fmt(t.amount)}</div>
+      <button class="del" onclick="deleteEntry(${t.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function setFilter(f){
+  currentFilter = f;
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.filter===f));
+  render();
+}
+
+function openSheet(){
+  if(!checkSetup()) return;
+  document.getElementById('sheetOverlay').classList.add('open');
+}
+function closeSheet(){
+  document.getElementById('sheetOverlay').classList.remove('open');
+  document.getElementById('fTitle').value='';
+  document.getElementById('fAmount').value='';
+  document.getElementById('fMemo').value='';
+  document.getElementById('fCategory').value='';
+  document.getElementById('fDate').value = todayStr();
+}
+function selectType(t){
+  currentType = t;
+  document.getElementById('btnDeposit').classList.toggle('sel', t==='deposit');
+  document.getElementById('btnWithdraw').classList.toggle('sel', t==='withdraw');
+}
+
+async function submitEntry(){
+  const date = document.getElementById('fDate').value || todayStr();
+  const category = document.getElementById('fCategory').value.trim();
+  const title = document.getElementById('fTitle').value.trim();
+  const amount = Number(document.getElementById('fAmount').value);
+  const memo = document.getElementById('fMemo').value.trim();
+  if(!title || !amount || amount<=0){
+    showToast('항목과 금액을 입력해주세요');
+    return;
+  }
+  const payload = { action:'add', date, type:currentType, category, title, amount, memo };
+  try{
+    await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+    showToast('저장했어요');
+    closeSheet();
+    loadData();
+  }catch(err){
+    showToast('저장 실패, 다시 시도해주세요');
+  }
+}
+
+async function deleteEntry(id){
+  if(!confirm('이 내역을 삭제할까요?')) return;
+  try{
+    await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'delete', id}) });
+    showToast('삭제했어요');
+    loadData();
+  }catch(err){
+    showToast('삭제 실패');
+  }
+}
+
+// 카테고리 관리
+function openCatManage(){
+  if(!checkSetup()) return;
+  renderCatManage();
+  document.getElementById('catOverlay').classList.add('open');
+}
+function closeCatManage(){
+  document.getElementById('catOverlay').classList.remove('open');
+  document.getElementById('newCatName').value='';
+  document.getElementById('newCatBudget').value='';
+}
+function renderCatManage(){
+  const el = document.getElementById('catManageList');
+  if(categories.length===0){
+    el.innerHTML = '<div class="empty" style="padding:16px;">등록된 카테고리가 없어요.</div>';
+    return;
+  }
+  el.innerHTML = categories.map(c=>`
+    <div class="cat-manage-row">
+      <input value="${escapeHtml(c.category)}" disabled>
+      <input class="mono amt-in" type="number" inputmode="numeric" value="${c.budget||0}" onchange="updateCategoryBudget('${encodeURIComponent(c.category)}', this.value)">
+      <button onclick="removeCategory('${encodeURIComponent(c.category)}')">✕</button>
+    </div>
+  `).join('');
+}
+async function addCategory(){
+  const name = document.getElementById('newCatName').value.trim();
+  const budget = Number(document.getElementById('newCatBudget').value) || 0;
+  if(!name){ showToast('카테고리명을 입력해주세요'); return; }
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setCategoryBudget', category:name, budget}) });
+  document.getElementById('newCatName').value='';
+  document.getElementById('newCatBudget').value='';
+  await loadData();
+  renderCatManage();
+  showToast('카테고리를 추가했어요');
+}
+async function updateCategoryBudget(encodedName, value){
+  const category = decodeURIComponent(encodedName);
+  const budget = Number(value) || 0;
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setCategoryBudget', category, budget}) });
+  await loadData();
+  showToast('예산을 수정했어요');
+}
+async function removeCategory(encodedName){
+  const category = decodeURIComponent(encodedName);
+  if(!confirm(`'${category}' 카테고리를 삭제할까요? (기존 내역은 유지돼요)`)) return;
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'deleteCategory', category}) });
+  await loadData();
+  renderCatManage();
+  showToast('카테고리를 삭제했어요');
+}
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=> navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+
+loadData();
+</script>
+</body>
+</html>
