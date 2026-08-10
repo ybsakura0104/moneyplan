@@ -157,15 +157,21 @@
 </head>
 <body>
 
-<header class="app-header">
-  <h1>용돈 통장</h1>
-  <p id="dateLabel">-</p>
+<header class="app-header" style="display:flex;justify-content:space-between;align-items:flex-start;">
+  <div>
+    <h1>용돈 통장</h1>
+    <p id="dateLabel">-</p>
+  </div>
+  <button onclick="openSetup()" style="position:relative;background:rgba(247,243,234,.15);border:none;color:var(--paper);width:36px;height:36px;border-radius:50%;font-size:1.05rem;cursor:pointer;">⚙</button>
 </header>
 
 <div id="setupBox" class="setup" style="display:none;">
-  Google Sheets 연동 주소(웹앱 URL)가 아직 설정되지 않았어요. Apps Script 배포 후 발급받은 URL을 붙여넣어 주세요.
+  <span id="setupLabel">Google Sheets 연동 주소(웹앱 URL)가 아직 설정되지 않았어요. Apps Script 배포 후 발급받은 URL을 붙여넣어 주세요.</span>
   <input id="apiUrlInput" type="text" placeholder="https://script.google.com/macros/s/xxxx/exec">
-  <button class="btn primary" onclick="saveApiUrl()">연결하기</button>
+  <div style="display:flex;gap:8px;margin-top:10px;">
+    <button class="btn primary" onclick="saveApiUrl()">연결하기</button>
+    <button class="btn ghost" id="setupCancelBtn" style="display:none;" onclick="closeSetup()">취소</button>
+  </div>
 </div>
 
 <div class="passbook">
@@ -276,12 +282,25 @@ function saveApiUrl(){
   localStorage.setItem(LS_API_KEY, v);
   API_URL = v;
   document.getElementById('setupBox').style.display = 'none';
+  showToast('연동 주소를 저장했어요');
   loadData();
+}
+
+function openSetup(){
+  document.getElementById('apiUrlInput').value = API_URL || '';
+  document.getElementById('setupLabel').textContent = API_URL
+    ? '연동 주소를 변경합니다. 새 웹앱 URL을 입력해주세요.'
+    : 'Google Sheets 연동 주소(웹앱 URL)가 아직 설정되지 않았어요. Apps Script 배포 후 발급받은 URL을 붙여넣어 주세요.';
+  document.getElementById('setupCancelBtn').style.display = API_URL ? 'block' : 'none';
+  document.getElementById('setupBox').style.display = 'block';
+}
+function closeSetup(){
+  document.getElementById('setupBox').style.display = 'none';
 }
 
 function checkSetup(){
   if(!API_URL){
-    document.getElementById('setupBox').style.display = 'block';
+    openSetup();
     document.getElementById('list').innerHTML = '<div class="empty">먼저 상단에서 시트 연동 주소를 등록해주세요.</div>';
     return false;
   }
