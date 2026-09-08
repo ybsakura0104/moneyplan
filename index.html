@@ -22,6 +22,8 @@
     --withdraw-bg:#F5E5DF;
     --accent:#1F3A5F;
     --accent-2:#2B4E7A;
+    --savings:#8A6D2F;
+    --savings-bg:#F1E9D4;
     font-size:16px;
   }
   *{box-sizing:border-box;}
@@ -42,6 +44,7 @@
     padding:22px 20px 20px;
     position:relative;
     overflow:hidden;
+    display:flex;justify-content:space-between;align-items:flex-start;
   }
   header.app-header::after{
     content:"";
@@ -52,28 +55,16 @@
     opacity:.12;
     pointer-events:none;
   }
-  header.app-header h1{
-    font-family:'Noto Serif KR',serif;
-    font-size:1.5rem;
-    margin:0 0 2px;
-    font-weight:700;
-    position:relative;
-  }
+  header.app-header h1{ font-family:'Noto Serif KR',serif; font-size:1.5rem; margin:0 0 2px; font-weight:700; position:relative; }
   header.app-header p{ margin:0; font-size:.8rem; opacity:.7; position:relative; }
+  .gear-btn{ position:relative;z-index:2;background:rgba(247,243,234,.15);border:none;color:var(--paper);width:36px;height:36px;border-radius:50%;font-size:1.05rem;cursor:pointer; }
 
   .passbook{
-    margin:16px;
-    background:#fff;
-    border-radius:14px;
+    margin:16px; background:#fff; border-radius:14px;
     box-shadow:0 1px 3px rgba(35,38,43,.08), 0 8px 20px -12px rgba(35,38,43,.25);
-    display:flex;
-    overflow:hidden;
-    border:1px solid var(--rule);
+    display:flex; overflow:hidden; border:1px solid var(--rule);
   }
-  .passbook-stub{
-    width:22px; background:var(--paper-2); border-right:1px dashed var(--rule);
-    display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; padding:14px 0;
-  }
+  .passbook-stub{ width:22px; background:var(--paper-2); border-right:1px dashed var(--rule); display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; padding:14px 0; }
   .passbook-stub span{ width:7px;height:7px;border-radius:50%; background:var(--paper); border:1px solid var(--rule); }
   .passbook-body{ flex:1; padding:18px 18px 16px; }
   .passbook-row{ display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; }
@@ -89,9 +80,7 @@
   .budget-bar-fill{ height:100%; background:var(--accent-2); border-radius:5px; transition:width .3s; }
   .budget-line{ display:flex; justify-content:space-between; font-size:.72rem; color:var(--ink-soft); margin-top:6px; }
 
-  .section-head{
-    display:flex; justify-content:space-between; align-items:center; margin:20px 16px 8px;
-  }
+  .section-head{ display:flex; justify-content:space-between; align-items:center; margin:20px 16px 8px; }
   .section-head h3{ font-family:'Noto Serif KR',serif; font-size:.98rem; margin:0; }
   .link-btn{ background:none;border:none;color:var(--accent-2);font-size:.78rem;font-weight:600;cursor:pointer;padding:0; }
 
@@ -106,6 +95,19 @@
   .cat-bar-fill.over{ background:var(--withdraw); }
   .cat-empty{ padding:8px; }
 
+  .sav-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:12px; padding:11px 14px; }
+  .sav-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; }
+  .sav-top .name{ font-weight:700; font-size:.9rem; }
+  .sav-top .round{ font-size:.75rem; background:var(--savings-bg); color:var(--savings); padding:2px 8px; border-radius:20px; font-weight:700; }
+  .sav-meta{ font-size:.72rem; color:var(--ink-soft); margin-bottom:6px; }
+  .sav-amt{ font-size:.95rem; font-weight:700; font-family:'IBM Plex Mono',monospace; margin-bottom:6px; }
+  .sav-amt .target{ font-size:.75rem; color:var(--ink-soft); font-weight:500; }
+
+  .month-nav{ display:flex; align-items:center; justify-content:center; gap:16px; margin:18px 16px 12px; }
+  .month-nav button{ background:var(--paper-2); border:none; width:34px;height:34px;border-radius:50%; font-size:1rem; color:var(--ink); cursor:pointer; }
+  .month-nav button:disabled{ opacity:.35; cursor:default; }
+  .month-nav .m-label{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:1rem; min-width:110px; text-align:center; }
+
   .tabs{ display:flex; gap:6px; margin:0 16px 12px; background:var(--paper-2); border-radius:10px; padding:4px; }
   .tabs button{ flex:1; border:none; background:transparent; padding:9px 0; border-radius:8px; font-size:.85rem; font-weight:600; color:var(--ink-soft); cursor:pointer; }
   .tabs button.active{ background:#fff; color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08); }
@@ -113,12 +115,12 @@
   .list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
   .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); font-size:.85rem; background:#fff; border:1px dashed var(--rule); border-radius:12px; }
   .item{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
-  .item .tag{ width:8px; align-self:stretch; border-radius:4px; flex-shrink:0; }
-  .tag.d{ background:var(--deposit); } .tag.w{ background:var(--withdraw); }
+  .item .tagbar{ width:8px; align-self:stretch; border-radius:4px; flex-shrink:0; }
+  .tagbar.d{ background:var(--deposit); } .tagbar.w{ background:var(--withdraw); }
   .item .info{ flex:1; min-width:0; }
   .item .title{ font-weight:600; font-size:.95rem; }
   .item .meta{ font-size:.72rem; color:var(--ink-soft); margin-top:2px; }
-  .item .catchip{ display:inline-block; background:var(--paper-2); color:var(--ink-soft); font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; }
+  .item .catchip{ display:inline-block; background:var(--paper-2); color:var(--ink-soft); font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; cursor:pointer; }
   .item .amt{ font-size:1rem; font-weight:700; white-space:nowrap; }
   .item .del{ background:none;border:none;color:var(--ink-soft);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
 
@@ -133,7 +135,8 @@
   .type-switch button.sel.d{ background:var(--deposit-bg); border-color:var(--deposit); color:var(--deposit); }
   .type-switch button.sel.w{ background:var(--withdraw-bg); border-color:var(--withdraw); color:var(--withdraw); }
   label{ font-size:.78rem; color:var(--ink-soft); display:block; margin:12px 0 5px; }
-  input, textarea{ width:100%; border:1.5px solid var(--rule); border-radius:10px; padding:11px 12px; font-size:.95rem; background:#fff; color:var(--ink); font-family:inherit; }
+  input, textarea, select{ width:100%; border:1.5px solid var(--rule); border-radius:10px; padding:11px 12px; font-size:.95rem; background:#fff; color:var(--ink); font-family:inherit; appearance:none; -webkit-appearance:none; }
+  select{ background-image:linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%), linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%); background-position: calc(100% - 18px) center, calc(100% - 13px) center; background-size: 5px 5px, 5px 5px; background-repeat:no-repeat; }
   input.mono{ font-family:'IBM Plex Mono',monospace; }
   .sheet-actions{ display:flex; gap:8px; margin-top:18px; }
   .btn{ flex:1; padding:13px 0; border-radius:10px; border:none; font-weight:700; font-size:.92rem; cursor:pointer; }
@@ -146,7 +149,18 @@
   .cat-manage-row input{ flex:1; }
   .cat-manage-row input.amt-in{ max-width:120px; }
   .cat-manage-row button{ background:none;border:none;color:var(--withdraw);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
-  .cat-manage-add{ display:flex; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); }
+  .cat-manage-add{ display:flex; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); flex-wrap:wrap; }
+  .cat-manage-add input{ flex:1; min-width:90px; }
+
+  .sav-manage-row{ border:1px solid var(--rule); border-radius:10px; padding:10px; margin-bottom:10px; }
+  .sav-manage-row .row1{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .sav-manage-row .row1 strong{ font-size:.88rem; }
+  .sav-manage-row .row1 button{ background:none;border:none;color:var(--withdraw);font-size:1rem;cursor:pointer; }
+  .sav-manage-row .grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .sav-manage-row label{ margin:6px 0 3px; }
+
+  .tag-banner{ display:none;margin:0 16px 10px;background:var(--accent);color:var(--paper);border-radius:10px;padding:10px 14px;font-size:.82rem;align-items:center;justify-content:space-between; }
+  .tag-banner button{ background:rgba(247,243,234,.2);border:none;color:var(--paper);border-radius:6px;padding:4px 10px;font-size:.75rem;cursor:pointer; }
 
   .toast{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:30px; font-size:.82rem; opacity:0; pointer-events:none; transition:opacity .25s; z-index:30; }
   .toast.show{ opacity:1; }
@@ -158,12 +172,12 @@
 </head>
 <body>
 
-<header class="app-header" style="display:flex;justify-content:space-between;align-items:flex-start;">
+<header class="app-header">
   <div>
     <h1>용돈 통장</h1>
     <p id="dateLabel">-</p>
   </div>
-  <button onclick="openSetup()" style="position:relative;z-index:2;background:rgba(247,243,234,.15);border:none;color:var(--paper);width:36px;height:36px;border-radius:50%;font-size:1.05rem;cursor:pointer;">⚙</button>
+  <button class="gear-btn" onclick="openSetup()">⚙</button>
 </header>
 
 <div id="setupBox" class="setup" style="display:none;">
@@ -181,31 +195,46 @@
   </div>
   <div class="passbook-body">
     <div class="passbook-row total">
-      <span class="label">현재 잔액</span>
+      <span class="label">전체 잔액</span>
       <span class="value mono" id="balanceValue">0원</span>
     </div>
     <div class="passbook-row">
-      <span class="label">이번 달 입금</span>
+      <span class="label" id="depositLabel">입금</span>
       <span class="value mono v-deposit" id="monthDeposit">+0원</span>
     </div>
     <div class="passbook-row">
-      <span class="label">이번 달 출금</span>
+      <span class="label" id="withdrawLabel">출금</span>
       <span class="value mono v-withdraw" id="monthWithdraw">-0원</span>
     </div>
     <div class="budget-bar"><div class="budget-bar-fill" id="budgetFill" style="width:0%"></div></div>
-    <div class="budget-line">
-      <span id="budgetText">카테고리 예산 미설정</span>
-    </div>
+    <div class="budget-line"><span id="budgetText">카테고리 예산 미설정</span></div>
   </div>
 </div>
 
 <div class="section-head">
-  <h3>카테고리별 현황 (이번 달)</h3>
+  <h3>카테고리별 현황</h3>
   <button class="link-btn" onclick="openCatManage()">카테고리 관리</button>
 </div>
 <div class="cat-list" id="catList"><div class="cat-empty empty">카테고리를 등록하면 여기에 표시돼요.</div></div>
 
-<div class="tabs">
+<div class="section-head">
+  <h3>적금 현황</h3>
+  <button class="link-btn" onclick="openSavManage()">적금 관리</button>
+</div>
+<div class="cat-list" id="savList"><div class="cat-empty empty">적금을 등록하면 여기에 표시돼요.</div></div>
+
+<div class="month-nav">
+  <button id="prevMonthBtn" onclick="changeMonth(-1)">◀</button>
+  <span class="m-label" id="monthLabel">-</span>
+  <button id="nextMonthBtn" onclick="changeMonth(1)">▶</button>
+</div>
+
+<div class="tag-banner" id="tagBanner">
+  <span id="tagBannerText"></span>
+  <button onclick="clearTagFilter()">해제 ✕</button>
+</div>
+
+<div class="tabs" id="tabsBar">
   <button class="active" data-filter="all" onclick="setFilter('all')">전체</button>
   <button data-filter="deposit" onclick="setFilter('deposit')">입금</button>
   <button data-filter="withdraw" onclick="setFilter('withdraw')">출금</button>
@@ -221,13 +250,13 @@
     <h2>내역 추가 <button class="close-x" onclick="closeSheet()">✕</button></h2>
     <div class="type-switch">
       <button id="btnDeposit" class="sel d" onclick="selectType('deposit')">입금</button>
-      <button id="btnWithdraw" onclick="selectType('withdraw')">출금</button>
+      <button id="btnWithdraw" class="w" onclick="selectType('withdraw')">출금</button>
     </div>
     <label>날짜</label>
     <input id="fDate" type="date">
     <label>카테고리</label>
-    <input id="fCategory" list="categoryOptions" placeholder="예: 식비, 교통비, 구독비용">
-    <datalist id="categoryOptions"></datalist>
+    <select id="fCategorySelect" onchange="onCategorySelectChange()"></select>
+    <input id="fCategoryCustom" type="text" placeholder="새 카테고리 이름 입력" style="display:none;margin-top:8px;">
     <label>항목</label>
     <input id="fTitle" type="text" placeholder="예: 편의점, 지하철, 넷플릭스">
     <label>금액</label>
@@ -254,18 +283,47 @@
   </div>
 </div>
 
+<!-- 적금 관리 -->
+<div class="sheet-overlay" id="savOverlay" onclick="if(event.target===this)closeSavManage()">
+  <div class="sheet">
+    <h2>적금 관리 <button class="close-x" onclick="closeSavManage()">✕</button></h2>
+    <div id="savManageList"></div>
+    <div style="border-top:1px dashed var(--rule);padding-top:12px;margin-top:6px;">
+      <label>적금 이름</label>
+      <input id="newSavName" placeholder="예: 자유적금">
+      <label>월 납입액</label>
+      <input id="newSavAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
+      <div style="display:flex;gap:8px;">
+        <div style="flex:1;">
+          <label>시작일</label>
+          <input id="newSavStart" type="date">
+        </div>
+        <div style="flex:1;">
+          <label>만기일</label>
+          <input id="newSavEnd" type="date">
+        </div>
+      </div>
+      <button class="btn primary" style="margin-top:12px;" onclick="addSavings()">적금 추가</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 const LS_API_KEY = 'ledger_api_url';
 let API_URL = localStorage.getItem(LS_API_KEY) || '';
 let transactions = [];
-let categories = []; // [{category, budget}]
+let categories = [];
+let savingsList = [];
 let currentFilter = 'all';
 let currentType = 'deposit';
+let tagFilter = null;
+let selectedMonth = new Date().toISOString().slice(0,7);
 
 const fmt = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const todayStr = () => new Date().toISOString().slice(0,10);
+const currentMonthKey = () => new Date().toISOString().slice(0,7);
 
 document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
 document.getElementById('fDate').value = todayStr();
@@ -286,7 +344,6 @@ function saveApiUrl(){
   showToast('연동 주소를 저장했어요');
   loadData();
 }
-
 function openSetup(){
   document.getElementById('apiUrlInput').value = API_URL || '';
   document.getElementById('setupLabel').textContent = API_URL
@@ -295,9 +352,7 @@ function openSetup(){
   document.getElementById('setupCancelBtn').style.display = API_URL ? 'block' : 'none';
   document.getElementById('setupBox').style.display = 'block';
 }
-function closeSetup(){
-  document.getElementById('setupBox').style.display = 'none';
-}
+function closeSetup(){ document.getElementById('setupBox').style.display = 'none'; }
 
 function checkSetup(){
   if(!API_URL){
@@ -316,16 +371,43 @@ async function loadData(){
     const data = await res.json();
     transactions = data.transactions || [];
     categories = data.categories || [];
+    savingsList = data.savings || [];
     render();
   }catch(err){
     document.getElementById('list').innerHTML = '<div class="empty">불러오기에 실패했어요. 연동 주소를 확인해주세요.</div>';
   }
 }
 
-function currentMonthKey(){ return new Date().toISOString().slice(0,7); }
+function monthLabelOf(ym){
+  const [y,m] = ym.split('-');
+  return `${y}년 ${Number(m)}월`;
+}
+
+function changeMonth(delta){
+  const [y,m] = selectedMonth.split('-').map(Number);
+  const d = new Date(y, m-1+delta, 1);
+  const next = d.toISOString().slice(0,7);
+  if(next > currentMonthKey()) return;
+  selectedMonth = next;
+  render();
+}
+
+function monthsBetween(startStr, endStr){
+  const s = new Date(startStr), e = new Date(endStr);
+  return (e.getFullYear()-s.getFullYear())*12 + (e.getMonth()-s.getMonth()) + 1;
+}
+function daysUntil(dateStr){
+  const diff = new Date(dateStr) - new Date(todayStr());
+  return Math.ceil(diff/86400000);
+}
 
 function render(){
-  const ym = currentMonthKey();
+  const ym = selectedMonth;
+  document.getElementById('monthLabel').textContent = monthLabelOf(ym);
+  document.getElementById('nextMonthBtn').disabled = ym >= currentMonthKey();
+  const isCurrent = ym === currentMonthKey();
+  document.getElementById('depositLabel').textContent = isCurrent ? '이번 달 입금' : monthLabelOf(ym)+' 입금';
+  document.getElementById('withdrawLabel').textContent = isCurrent ? '이번 달 출금' : monthLabelOf(ym)+' 출금';
 
   let balance = 0, mDeposit = 0, mWithdraw = 0;
   const catSpend = {};
@@ -349,7 +431,7 @@ function render(){
     const pct = Math.min(100, (mWithdraw/totalBudget)*100);
     document.getElementById('budgetFill').style.width = pct + '%';
     document.getElementById('budgetFill').style.background = pct >= 100 ? 'var(--withdraw)' : 'var(--accent-2)';
-    document.getElementById('budgetText').textContent = `전체 예산 ${fmt(totalBudget)} 중 ${fmt(Math.max(0,totalBudget-mWithdraw))} 남음`;
+    document.getElementById('budgetText').textContent = `${monthLabelOf(ym)} 예산 ${fmt(totalBudget)} 중 ${fmt(Math.max(0,totalBudget-mWithdraw))} 남음`;
   } else {
     document.getElementById('budgetFill').style.width = '0%';
     document.getElementById('budgetText').textContent = '카테고리 예산 미설정';
@@ -366,7 +448,7 @@ function render(){
       const pct = budget>0 ? Math.min(100,(spent/budget)*100) : (spent>0?100:0);
       const over = budget>0 && spent>budget;
       return `
-        <div class="cat-card">
+        <div class="cat-card" style="cursor:pointer;" onclick="filterByTag('${encodeURIComponent(c.category)}')">
           <div class="cat-card-top">
             <span class="name">${escapeHtml(c.category)}</span>
             <span class="nums"><b>${fmt(spent)}</b> / ${budget>0?fmt(budget):'예산없음'}</span>
@@ -376,28 +458,76 @@ function render(){
     }).join('');
   }
 
-  // 카테고리 자동완성 목록 (등록된 카테고리 + 내역에서 쓰인 카테고리)
+  // 적금 현황
+  const savListEl = document.getElementById('savList');
+  if(savingsList.length === 0){
+    savListEl.innerHTML = '<div class="cat-empty empty">적금을 등록하면 여기에 표시돼요.</div>';
+  } else {
+    savListEl.innerHTML = savingsList.map(s=>{
+      const paidTx = transactions.filter(t=>t.type==='withdraw' && t.category===s.name);
+      const paidAmt = paidTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+      const round = paidTx.length;
+      const totalRounds = Math.max(1, monthsBetween(s.startDate, s.endDate));
+      const target = Number(s.monthlyAmount)*totalRounds;
+      const pct = Math.min(100, (round/totalRounds)*100);
+      const dday = daysUntil(s.endDate);
+      return `
+        <div class="sav-card" style="cursor:pointer;" onclick="filterByTag('${encodeURIComponent(s.name)}')">
+          <div class="sav-top">
+            <span class="name">${escapeHtml(s.name)}</span>
+            <span class="round">${round}/${totalRounds}회차</span>
+          </div>
+          <div class="sav-meta">만기 ${s.endDate} ${dday>=0?`(D-${dday})`:'(만기 지남)'} · 월 ${fmt(s.monthlyAmount)}</div>
+          <div class="sav-amt">${fmt(paidAmt)} <span class="target">/ 목표 ${fmt(target)}</span></div>
+          <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:var(--savings);"></div></div>
+        </div>`;
+    }).join('');
+  }
+
+  // 카테고리 선택 옵션 (드롭다운)
   const allCats = new Set(categories.map(c=>c.category));
+  savingsList.forEach(s=>allCats.add(s.name));
   transactions.forEach(t=>{ if(t.category) allCats.add(t.category); });
-  document.getElementById('categoryOptions').innerHTML = Array.from(allCats).map(c=>`<option value="${escapeHtml(c)}">`).join('');
+  const sel = document.getElementById('fCategorySelect');
+  const prevVal = sel.value;
+  sel.innerHTML = '<option value="">선택 안 함</option>' +
+    Array.from(allCats).sort().map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('') +
+    '<option value="__custom__">+ 직접 입력</option>';
+  if(Array.from(allCats).includes(prevVal)) sel.value = prevVal;
+
+  // 태그 필터 배너
+  const banner = document.getElementById('tagBanner');
+  const tabsBar = document.getElementById('tabsBar');
+  if(tagFilter){
+    const tagAmt = transactions.filter(t=>t.category===tagFilter && t.type==='withdraw').reduce((s,t)=>s+(Number(t.amount)||0),0);
+    const tagCnt = transactions.filter(t=>t.category===tagFilter).length;
+    banner.style.display = 'flex';
+    document.getElementById('tagBannerText').textContent = `🏷 "${tagFilter}" · 총 ${tagCnt}건 · 지출 합계 ${fmt(tagAmt)}`;
+    tabsBar.style.display = 'none';
+  } else {
+    banner.style.display = 'none';
+    tabsBar.style.display = 'flex';
+  }
 
   // 내역 목록
   const filtered = transactions
-    .filter(t => currentFilter==='all' ? true : t.type===currentFilter)
+    .filter(t => tagFilter
+      ? t.category===tagFilter
+      : ((t.date||'').slice(0,7)===ym) && (currentFilter==='all' ? true : t.type===currentFilter))
     .sort((a,b)=> (b.date||'').localeCompare(a.date||'') || (b.id-a.id));
 
   const list = document.getElementById('list');
   if(filtered.length===0){
-    list.innerHTML = '<div class="empty">아직 내역이 없어요.<br>오른쪽 아래 + 버튼으로 추가해보세요.</div>';
+    list.innerHTML = '<div class="empty">해당 조건의 내역이 없어요.<br>오른쪽 아래 + 버튼으로 추가해보세요.</div>';
     return;
   }
   list.innerHTML = filtered.map(t=>`
     <div class="item">
-      <div class="tag ${t.type==='deposit'?'d':'w'}"></div>
+      <div class="tagbar ${t.type==='deposit'?'d':'w'}"></div>
       <div class="info">
         <div class="title">${escapeHtml(t.title||'(제목없음)')}</div>
         <div class="meta">${t.date}${t.memo? ' · '+escapeHtml(t.memo):''}</div>
-        ${t.category?`<span class="catchip">${escapeHtml(t.category)}</span>`:''}
+        ${t.category?`<span class="catchip" onclick="filterByTag('${encodeURIComponent(t.category)}')">${escapeHtml(t.category)}</span>`:''}
       </div>
       <div class="amt ${t.type==='deposit'?'v-deposit':'v-withdraw'} mono">${t.type==='deposit'?'+':'-'}${fmt(t.amount)}</div>
       <button class="del" onclick="deleteEntry(${t.id})">✕</button>
@@ -415,8 +545,17 @@ function setFilter(f){
   render();
 }
 
+function filterByTag(encodedName){
+  tagFilter = decodeURIComponent(encodedName);
+  render();
+  document.getElementById('tagBanner').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function clearTagFilter(){ tagFilter = null; render(); }
+
 function openSheet(){
   if(!checkSetup()) return;
+  const defaultType = currentFilter==='withdraw' ? 'withdraw' : 'deposit';
+  selectType(defaultType);
   document.getElementById('sheetOverlay').classList.add('open');
 }
 function closeSheet(){
@@ -424,7 +563,9 @@ function closeSheet(){
   document.getElementById('fTitle').value='';
   document.getElementById('fAmount').value='';
   document.getElementById('fMemo').value='';
-  document.getElementById('fCategory').value='';
+  document.getElementById('fCategorySelect').value='';
+  document.getElementById('fCategoryCustom').value='';
+  document.getElementById('fCategoryCustom').style.display='none';
   document.getElementById('fDate').value = todayStr();
 }
 function selectType(t){
@@ -432,10 +573,15 @@ function selectType(t){
   document.getElementById('btnDeposit').classList.toggle('sel', t==='deposit');
   document.getElementById('btnWithdraw').classList.toggle('sel', t==='withdraw');
 }
+function onCategorySelectChange(){
+  const v = document.getElementById('fCategorySelect').value;
+  document.getElementById('fCategoryCustom').style.display = (v==='__custom__') ? 'block' : 'none';
+}
 
 async function submitEntry(){
   const date = document.getElementById('fDate').value || todayStr();
-  const category = document.getElementById('fCategory').value.trim();
+  const selVal = document.getElementById('fCategorySelect').value;
+  const category = selVal==='__custom__' ? document.getElementById('fCategoryCustom').value.trim() : selVal;
   const title = document.getElementById('fTitle').value.trim();
   const amount = Number(document.getElementById('fAmount').value);
   const memo = document.getElementById('fMemo').value.trim();
@@ -515,6 +661,68 @@ async function removeCategory(encodedName){
   await loadData();
   renderCatManage();
   showToast('카테고리를 삭제했어요');
+}
+
+// 적금 관리
+function openSavManage(){
+  if(!checkSetup()) return;
+  renderSavManage();
+  document.getElementById('newSavStart').value = todayStr();
+  document.getElementById('savOverlay').classList.add('open');
+}
+function closeSavManage(){
+  document.getElementById('savOverlay').classList.remove('open');
+  document.getElementById('newSavName').value='';
+  document.getElementById('newSavAmount').value='';
+  document.getElementById('newSavEnd').value='';
+}
+function renderSavManage(){
+  const el = document.getElementById('savManageList');
+  if(savingsList.length===0){
+    el.innerHTML = '<div class="empty" style="padding:16px;">등록된 적금이 없어요.</div>';
+    return;
+  }
+  el.innerHTML = savingsList.map(s=>`
+    <div class="sav-manage-row">
+      <div class="row1"><strong>${escapeHtml(s.name)}</strong><button onclick="removeSavings('${encodeURIComponent(s.name)}')">✕ 삭제</button></div>
+      <div class="grid">
+        <div><label>월 납입액</label><input class="mono" type="number" value="${s.monthlyAmount}" onchange="updateSavings('${encodeURIComponent(s.name)}','monthlyAmount',this.value)"></div>
+        <div><label>만기일</label><input type="date" value="${s.endDate}" onchange="updateSavings('${encodeURIComponent(s.name)}','endDate',this.value)"></div>
+      </div>
+    </div>
+  `).join('');
+}
+async function addSavings(){
+  const name = document.getElementById('newSavName').value.trim();
+  const monthlyAmount = Number(document.getElementById('newSavAmount').value) || 0;
+  const startDate = document.getElementById('newSavStart').value || todayStr();
+  const endDate = document.getElementById('newSavEnd').value;
+  if(!name || !monthlyAmount || !endDate){ showToast('이름, 월납입액, 만기일을 입력해주세요'); return; }
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSavings', name, monthlyAmount, startDate, endDate}) });
+  await loadData();
+  renderSavManage();
+  document.getElementById('newSavName').value='';
+  document.getElementById('newSavAmount').value='';
+  document.getElementById('newSavEnd').value='';
+  showToast('적금을 추가했어요');
+}
+async function updateSavings(encodedName, field, value){
+  const name = decodeURIComponent(encodedName);
+  const existing = savingsList.find(s=>s.name===name);
+  if(!existing) return;
+  const payload = { action:'setSavings', name, monthlyAmount:existing.monthlyAmount, startDate:existing.startDate, endDate:existing.endDate };
+  payload[field] = field==='monthlyAmount' ? Number(value) : value;
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+  await loadData();
+  showToast('적금 정보를 수정했어요');
+}
+async function removeSavings(encodedName){
+  const name = decodeURIComponent(encodedName);
+  if(!confirm(`'${name}' 적금을 삭제할까요? (기존 내역은 유지돼요)`)) return;
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'deleteSavings', name}) });
+  await loadData();
+  renderSavManage();
+  showToast('적금을 삭제했어요');
 }
 
 if('serviceWorker' in navigator){
