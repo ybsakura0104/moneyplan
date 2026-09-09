@@ -294,6 +294,9 @@
     <input id="salPayDay" type="number" min="1" max="31" placeholder="25">
     <label>급여액</label>
     <input id="salAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
+    <label>이월 시작월 (선택)</label>
+    <input id="salRolloverStart" type="month">
+    <p style="font-size:.72rem;color:var(--ink-soft);margin:4px 0 0;">지정한 달부터 "예산 이월" 계산을 시작해요. 그 이전 내역은 이월 계산에 반영되지 않아요. 비워두면 가장 오래된 내역부터 자동 계산됩니다.</p>
     <div class="sheet-actions">
       <button class="btn ghost" onclick="closeSalaryManage()">취소</button>
       <button class="btn primary" onclick="saveSalary()">저장</button>
@@ -309,7 +312,7 @@ let API_URL = localStorage.getItem(LS_API_KEY) || '';
 let transactions = [];
 let categories = [];
 let savingsList = [];
-let salary = { payDay: 25, amount: 0 };
+let salary = { payDay: 25, amount: 0, rolloverStart: '' };
 let currentFilter = 'all';
 let currentType = 'deposit';
 let tagFilter = null;
@@ -369,7 +372,7 @@ async function loadData(){
     transactions = data.transactions || [];
     categories = data.categories || [];
     savingsList = data.savings || [];
-    salary = data.salary || { payDay:25, amount:0 };
+    salary = data.salary || { payDay:25, amount:0, rolloverStart:'' };
 
     const created = await reconcileAuto();
     if(created){
@@ -464,11 +467,13 @@ async function reconcileAuto(){
 
 // ---------- 예산 이월 계산 ----------
 function earliestMonth(){
+  if(salary.rolloverStart){ return salary.rolloverStart; }
   const months = transactions.map(t=>(t.date||'').slice(0,7)).filter(Boolean);
   return months.length ? months.reduce((a,b)=> a<b?a:b) : currentMonthKey();
 }
 function effectiveBudgetGeneric(ym, base, spendFn){
   let anchor = earliestMonth();
+  if(ym < anchor) return base;
   if(ymDiff(ym, anchor) > 24) anchor = ymAdd(ym, -24);
   let budget = base;
   let cursor = anchor;
@@ -877,14 +882,16 @@ function openSalaryManage(){
   if(!checkSetup()) return;
   document.getElementById('salPayDay').value = salary.payDay || 25;
   document.getElementById('salAmount').value = salary.amount || '';
+  document.getElementById('salRolloverStart').value = salary.rolloverStart || '';
   document.getElementById('salOverlay').classList.add('open');
 }
 function closeSalaryManage(){ document.getElementById('salOverlay').classList.remove('open'); }
 async function saveSalary(){
   const payDay = Math.min(31, Math.max(1, Number(document.getElementById('salPayDay').value) || 25));
   const amount = Number(document.getElementById('salAmount').value) || 0;
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSalary', payDay, amount}) });
-  salary = { payDay, amount };
+  const rolloverStart = document.getElementById('salRolloverStart').value || '';
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSalary', payDay, amount, rolloverStart}) });
+  salary = { payDay, amount, rolloverStart };
   closeSalaryManage();
   loadData();
   showToast('급여 정보를 저장했어요');
