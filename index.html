@@ -11,59 +11,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F7F3EA;
-    --paper-2:#EFE9D8;
-    --ink:#23262B;
-    --ink-soft:#5B5A52;
-    --rule:#D8D0BC;
-    --deposit:#2F6F4E;
-    --deposit-bg:#E4EEE6;
-    --withdraw:#B4432D;
-    --withdraw-bg:#F5E5DF;
-    --accent:#1F3A5F;
-    --accent-2:#2B4E7A;
-    --savings:#8A6D2F;
-    --savings-bg:#F1E9D4;
+    --paper:#F7F3EA; --paper-2:#EFE9D8; --ink:#23262B; --ink-soft:#5B5A52; --rule:#D8D0BC;
+    --deposit:#2F6F4E; --deposit-bg:#E4EEE6; --withdraw:#B4432D; --withdraw-bg:#F5E5DF;
+    --accent:#1F3A5F; --accent-2:#2B4E7A; --savings:#8A6D2F; --savings-bg:#F1E9D4;
     font-size:16px;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
-    -webkit-font-smoothing:antialiased;
-    padding-bottom:96px;
-  }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; -webkit-font-smoothing:antialiased; padding-bottom:96px; }
   .brand{ font-family:'Noto Serif KR',serif; }
   .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:-0.02em; }
 
-  header.app-header{
-    background:var(--accent);
-    color:var(--paper);
-    padding:22px 20px 20px;
-    position:relative;
-    overflow:hidden;
-    display:flex;justify-content:space-between;align-items:flex-start;
-  }
-  header.app-header::after{
-    content:"";
-    position:absolute; inset:0;
-    background-image:radial-gradient(circle at 6px 0, transparent 5px, var(--accent) 5.5px);
-    background-size:16px 16px;
-    background-position:-8px -8px;
-    opacity:.12;
-    pointer-events:none;
-  }
+  header.app-header{ background:var(--accent); color:var(--paper); padding:22px 20px 20px; position:relative; overflow:hidden; display:flex;justify-content:space-between;align-items:flex-start; }
+  header.app-header::after{ content:""; position:absolute; inset:0; background-image:radial-gradient(circle at 6px 0, transparent 5px, var(--accent) 5.5px); background-size:16px 16px; background-position:-8px -8px; opacity:.12; pointer-events:none; }
   header.app-header h1{ font-family:'Noto Serif KR',serif; font-size:1.5rem; margin:0 0 2px; font-weight:700; position:relative; }
   header.app-header p{ margin:0; font-size:.8rem; opacity:.7; position:relative; }
   .gear-btn{ position:relative;z-index:2;background:rgba(247,243,234,.15);border:none;color:var(--paper);width:36px;height:36px;border-radius:50%;font-size:1.05rem;cursor:pointer; }
 
-  .passbook{
-    margin:16px; background:#fff; border-radius:14px;
-    box-shadow:0 1px 3px rgba(35,38,43,.08), 0 8px 20px -12px rgba(35,38,43,.25);
-    display:flex; overflow:hidden; border:1px solid var(--rule);
-  }
+  .passbook{ margin:16px; background:#fff; border-radius:14px; box-shadow:0 1px 3px rgba(35,38,43,.08), 0 8px 20px -12px rgba(35,38,43,.25); display:flex; overflow:hidden; border:1px solid var(--rule); }
   .passbook-stub{ width:22px; background:var(--paper-2); border-right:1px dashed var(--rule); display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; padding:14px 0; }
   .passbook-stub span{ width:7px;height:7px;border-radius:50%; background:var(--paper); border:1px solid var(--rule); }
   .passbook-body{ flex:1; padding:18px 18px 16px; }
@@ -73,21 +37,23 @@
   .passbook-row .value{ font-size:1.05rem; font-weight:600; }
   .passbook-row.total .value{ font-size:1.65rem; font-weight:700; }
   .passbook-row.total .label{ font-size:.85rem; }
-  .v-deposit{ color:var(--deposit); }
-  .v-withdraw{ color:var(--withdraw); }
+  .v-deposit{ color:var(--deposit); } .v-withdraw{ color:var(--withdraw); }
 
   .budget-bar{ margin-top:12px; height:8px; border-radius:5px; background:var(--paper-2); overflow:hidden; }
   .budget-bar-fill{ height:100%; background:var(--accent-2); border-radius:5px; transition:width .3s; }
-  .budget-line{ display:flex; justify-content:space-between; font-size:.72rem; color:var(--ink-soft); margin-top:6px; }
+  .budget-line{ display:flex; justify-content:space-between; align-items:center; font-size:.72rem; color:var(--ink-soft); margin-top:6px; }
 
-  .section-head{ display:flex; justify-content:space-between; align-items:center; margin:20px 16px 8px; }
+  .section-head{ display:flex; justify-content:space-between; align-items:center; margin:20px 16px 4px; }
   .section-head h3{ font-family:'Noto Serif KR',serif; font-size:.98rem; margin:0; }
+  .section-sub{ margin:0 16px 8px; font-size:.72rem; color:var(--ink-soft); }
   .link-btn{ background:none;border:none;color:var(--accent-2);font-size:.78rem;font-weight:600;cursor:pointer;padding:0; }
 
   .cat-list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
-  .cat-card{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:11px 14px; }
+  .cat-card{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:11px 14px; cursor:pointer; }
+  .cat-card.is-saving{ border-left:4px solid var(--savings); }
   .cat-card-top{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:6px; }
   .cat-card-top .name{ font-weight:700; }
+  .cat-card-top .name .badge{ font-size:.65rem; background:var(--savings-bg); color:var(--savings); padding:1px 6px; border-radius:20px; margin-left:5px; font-weight:700; }
   .cat-card-top .nums{ font-size:.78rem; color:var(--ink-soft); }
   .cat-card-top .nums b{ color:var(--ink); font-family:'IBM Plex Mono',monospace; }
   .cat-bar{ height:6px; border-radius:4px; background:var(--paper-2); overflow:hidden; }
@@ -95,13 +61,21 @@
   .cat-bar-fill.over{ background:var(--withdraw); }
   .cat-empty{ padding:8px; }
 
-  .sav-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:12px; padding:11px 14px; }
+  .sav-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:12px; padding:11px 14px; cursor:pointer; }
   .sav-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; }
   .sav-top .name{ font-weight:700; font-size:.9rem; }
   .sav-top .round{ font-size:.75rem; background:var(--savings-bg); color:var(--savings); padding:2px 8px; border-radius:20px; font-weight:700; }
   .sav-meta{ font-size:.72rem; color:var(--ink-soft); margin-bottom:6px; }
   .sav-amt{ font-size:.95rem; font-weight:700; font-family:'IBM Plex Mono',monospace; margin-bottom:6px; }
   .sav-amt .target{ font-size:.75rem; color:var(--ink-soft); font-weight:500; }
+
+  .chart-box{ margin:0 16px; background:#fff; border:1px solid var(--rule); border-radius:12px; padding:14px; }
+  .chart-row{ display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+  .chart-row:last-child{ margin-bottom:0; }
+  .chart-row .clabel{ width:64px; flex-shrink:0; font-size:.72rem; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .chart-row .ctrack{ flex:1; height:16px; background:var(--paper-2); border-radius:4px; overflow:hidden; }
+  .chart-row .cfill{ height:100%; background:linear-gradient(90deg,var(--accent-2),var(--accent)); border-radius:4px; }
+  .chart-row .camt{ width:74px; flex-shrink:0; text-align:right; font-size:.72rem; font-family:'IBM Plex Mono',monospace; }
 
   .month-nav{ display:flex; align-items:center; justify-content:center; gap:16px; margin:18px 16px 12px; }
   .month-nav button{ background:var(--paper-2); border:none; width:34px;height:34px;border-radius:50%; font-size:1rem; color:var(--ink); cursor:pointer; }
@@ -151,6 +125,8 @@
   .cat-manage-row button{ background:none;border:none;color:var(--withdraw);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
   .cat-manage-add{ display:flex; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); flex-wrap:wrap; }
   .cat-manage-add input{ flex:1; min-width:90px; }
+  .alloc-summary{ font-size:.78rem; color:var(--ink-soft); background:var(--paper-2); border-radius:8px; padding:8px 10px; margin-bottom:10px; }
+  .alloc-summary b{ color:var(--ink); }
 
   .sav-manage-row{ border:1px solid var(--rule); border-radius:10px; padding:10px; margin-bottom:10px; }
   .sav-manage-row .row1{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
@@ -190,9 +166,7 @@
 </div>
 
 <div class="passbook">
-  <div class="passbook-stub">
-    <span></span><span></span><span></span><span></span><span></span><span></span>
-  </div>
+  <div class="passbook-stub"><span></span><span></span><span></span><span></span><span></span><span></span></div>
   <div class="passbook-body">
     <div class="passbook-row total">
       <span class="label">전체 잔액</span>
@@ -208,8 +182,8 @@
     </div>
     <div class="budget-bar"><div class="budget-bar-fill" id="budgetFill" style="width:0%"></div></div>
     <div class="budget-line">
-      <span id="budgetText">카테고리 예산 미설정</span>
-      <button class="link-btn" onclick="openBaseBudgetPrompt()">기본예산 설정</button>
+      <span id="budgetText">급여 미설정</span>
+      <button class="link-btn" onclick="openSalaryManage()">급여 설정</button>
     </div>
   </div>
 </div>
@@ -218,6 +192,7 @@
   <h3>카테고리별 현황</h3>
   <button class="link-btn" onclick="openCatManage()">카테고리 관리</button>
 </div>
+<div class="section-sub" id="allocSummaryMain"></div>
 <div class="cat-list" id="catList"><div class="cat-empty empty">카테고리를 등록하면 여기에 표시돼요.</div></div>
 
 <div class="section-head">
@@ -225,6 +200,9 @@
   <button class="link-btn" onclick="openSavManage()">적금 관리</button>
 </div>
 <div class="cat-list" id="savList"><div class="cat-empty empty">적금을 등록하면 여기에 표시돼요.</div></div>
+
+<div class="section-head"><h3>지출 그래프</h3></div>
+<div class="chart-box" id="chartBox"><div class="empty" style="border:none;padding:12px;">이번 달 지출 내역이 쌓이면 그래프가 표시돼요.</div></div>
 
 <div class="month-nav">
   <button id="prevMonthBtn" onclick="changeMonth(-1)">◀</button>
@@ -277,6 +255,7 @@
 <div class="sheet-overlay" id="catOverlay" onclick="if(event.target===this)closeCatManage()">
   <div class="sheet">
     <h2>카테고리 예산 관리 <button class="close-x" onclick="closeCatManage()">✕</button></h2>
+    <div class="alloc-summary" id="allocSummary"></div>
     <div id="catManageList"></div>
     <div class="cat-manage-add">
       <input id="newCatName" placeholder="새 카테고리명">
@@ -290,6 +269,7 @@
 <div class="sheet-overlay" id="savOverlay" onclick="if(event.target===this)closeSavManage()">
   <div class="sheet">
     <h2>적금 관리 <button class="close-x" onclick="closeSavManage()">✕</button></h2>
+    <div class="alloc-summary" id="allocSummarySav"></div>
     <div id="savManageList"></div>
     <div style="border-top:1px dashed var(--rule);padding-top:12px;margin-top:6px;">
       <label>적금 이름</label>
@@ -297,16 +277,26 @@
       <label>월 납입액</label>
       <input id="newSavAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
       <div style="display:flex;gap:8px;">
-        <div style="flex:1;">
-          <label>시작일</label>
-          <input id="newSavStart" type="date">
-        </div>
-        <div style="flex:1;">
-          <label>만기일</label>
-          <input id="newSavEnd" type="date">
-        </div>
+        <div style="flex:1;"><label>시작일</label><input id="newSavStart" type="date"></div>
+        <div style="flex:1;"><label>만기일</label><input id="newSavEnd" type="date"></div>
       </div>
       <button class="btn primary" style="margin-top:12px;" onclick="addSavings()">적금 추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 급여 설정 -->
+<div class="sheet-overlay" id="salOverlay" onclick="if(event.target===this)closeSalaryManage()">
+  <div class="sheet">
+    <h2>급여 설정 <button class="close-x" onclick="closeSalaryManage()">✕</button></h2>
+    <p style="font-size:.8rem;color:var(--ink-soft);margin:0 0 10px;">설정한 날짜가 지나면 자동으로 입금 내역이 생성돼요. 실제 입금일이 바뀌면 날짜를 수정해주세요.</p>
+    <label>급여일 (매달 며칠)</label>
+    <input id="salPayDay" type="number" min="1" max="31" placeholder="25">
+    <label>급여액</label>
+    <input id="salAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
+    <div class="sheet-actions">
+      <button class="btn ghost" onclick="closeSalaryManage()">취소</button>
+      <button class="btn primary" onclick="saveSalary()">저장</button>
     </div>
   </div>
 </div>
@@ -319,7 +309,7 @@ let API_URL = localStorage.getItem(LS_API_KEY) || '';
 let transactions = [];
 let categories = [];
 let savingsList = [];
-let baseBudget = 0;
+let salary = { payDay: 25, amount: 0 };
 let currentFilter = 'all';
 let currentType = 'deposit';
 let tagFilter = null;
@@ -334,8 +324,7 @@ document.getElementById('fDate').value = todayStr();
 
 function showToast(msg){
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 1800);
 }
 
@@ -367,27 +356,33 @@ function checkSetup(){
   return true;
 }
 
+async function fetchAll(){
+  const res = await fetch(API_URL + '?t=' + Date.now());
+  return res.json();
+}
+
 async function loadData(){
   if(!checkSetup()) return;
   document.getElementById('list').innerHTML = '<div class="empty">불러오는 중...</div>';
   try{
-    const res = await fetch(API_URL + '?t=' + Date.now());
-    const data = await res.json();
+    const data = await fetchAll();
     transactions = data.transactions || [];
     categories = data.categories || [];
     savingsList = data.savings || [];
-    baseBudget = Number(data.baseBudget) || 0;
+    salary = data.salary || { payDay:25, amount:0 };
+
+    const created = await reconcileAuto();
+    if(created){
+      const data2 = await fetchAll();
+      transactions = data2.transactions || [];
+    }
     render();
   }catch(err){
     document.getElementById('list').innerHTML = '<div class="empty">불러오기에 실패했어요. 연동 주소를 확인해주세요.</div>';
   }
 }
 
-function monthLabelOf(ym){
-  const [y,m] = ym.split('-');
-  return `${y}년 ${Number(m)}월`;
-}
-
+// ---------- 날짜 유틸 ----------
 function ymAdd(ym, delta){
   let [y,m] = ym.split('-').map(Number);
   m += delta;
@@ -399,6 +394,18 @@ function ymDiff(a,b){
   const [ay,am]=a.split('-').map(Number), [by,bm]=b.split('-').map(Number);
   return (ay-by)*12+(am-bm);
 }
+function lastDayOfMonth(ym){
+  const [y,m] = ym.split('-').map(Number);
+  return new Date(y, m, 0).getDate();
+}
+function monthLabelOf(ym){ const [y,m] = ym.split('-'); return `${y}년 ${Number(m)}월`; }
+function monthsBetween(startStr, endStr){
+  const s = new Date(startStr), e = new Date(endStr);
+  return (e.getFullYear()-s.getFullYear())*12 + (e.getMonth()-s.getMonth()) + 1;
+}
+function daysUntil(dateStr){
+  return Math.ceil((new Date(dateStr) - new Date(todayStr()))/86400000);
+}
 
 function changeMonth(delta){
   const next = ymAdd(selectedMonth, delta);
@@ -407,49 +414,88 @@ function changeMonth(delta){
   render();
 }
 
-function monthsBetween(startStr, endStr){
-  const s = new Date(startStr), e = new Date(endStr);
-  return (e.getFullYear()-s.getFullYear())*12 + (e.getMonth()-s.getMonth()) + 1;
-}
-function daysUntil(dateStr){
-  const diff = new Date(dateStr) - new Date(todayStr());
-  return Math.ceil(diff/86400000);
+// ---------- 자동 내역 생성 (월급 / 적금) ----------
+async function reconcileAuto(){
+  let created = false;
+  const todayYm = currentMonthKey();
+  const todayDate = new Date(todayStr());
+
+  for(const s of savingsList){
+    const startYm = s.startDate.slice(0,7);
+    const endYm = s.endDate.slice(0,7);
+    const lastYm = endYm < todayYm ? endYm : todayYm;
+    let cursor = startYm;
+    while(cursor <= lastYm){
+      const exists = transactions.some(t=>t.type==='withdraw' && t.category===s.name && (t.date||'').slice(0,7)===cursor);
+      if(!exists){
+        const day = Number(s.startDate.slice(8,10));
+        const useDay = Math.min(day, lastDayOfMonth(cursor));
+        const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
+        if(new Date(dateStr) <= todayDate){
+          await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'add', date:dateStr, type:'withdraw', category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성'})});
+          transactions.push({id:-1, date:dateStr, type:'withdraw', category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성'});
+          created = true;
+        }
+      }
+      cursor = ymAdd(cursor,1);
+    }
+  }
+
+  if(salary && salary.amount>0 && salary.payDay){
+    const salaryTx = transactions.filter(t=>t.type==='deposit' && t.category==='월급').sort((a,b)=>b.date.localeCompare(a.date));
+    let startYm = salaryTx.length>0 ? ymAdd(salaryTx[0].date.slice(0,7), 1) : todayYm;
+    let cursor = startYm;
+    while(cursor <= todayYm){
+      const exists = transactions.some(t=>t.type==='deposit' && t.category==='월급' && (t.date||'').slice(0,7)===cursor);
+      if(!exists){
+        const useDay = Math.min(salary.payDay, lastDayOfMonth(cursor));
+        const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
+        if(new Date(dateStr) <= todayDate){
+          await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'add', date:dateStr, type:'deposit', category:'월급', title:'월급', amount:salary.amount, memo:'자동 생성'})});
+          transactions.push({id:-1, date:dateStr, type:'deposit', category:'월급', title:'월급', amount:salary.amount, memo:'자동 생성'});
+          created = true;
+        }
+      }
+      cursor = ymAdd(cursor,1);
+    }
+  }
+  return created;
 }
 
-function spendInMonth(ym){
-  return transactions.filter(t=>t.type==='withdraw' && (t.date||'').slice(0,7)===ym)
-    .reduce((s,t)=>s+(Number(t.amount)||0),0);
-}
-
-function effectiveBudget(ym){
+// ---------- 예산 이월 계산 ----------
+function earliestMonth(){
   const months = transactions.map(t=>(t.date||'').slice(0,7)).filter(Boolean);
-  let anchor = months.length ? months.reduce((a,b)=> a<b?a:b) : ym;
-  if(ymDiff(ym, anchor) > 24) anchor = ymAdd(ym, -24); // 과도한 반복 방지
-  let budget = baseBudget;
+  return months.length ? months.reduce((a,b)=> a<b?a:b) : currentMonthKey();
+}
+function effectiveBudgetGeneric(ym, base, spendFn){
+  let anchor = earliestMonth();
+  if(ymDiff(ym, anchor) > 24) anchor = ymAdd(ym, -24);
+  let budget = base;
   let cursor = anchor;
   while(cursor < ym){
-    const spend = spendInMonth(cursor);
+    const spend = spendFn(cursor);
     const leftover = budget - spend;
     cursor = ymAdd(cursor, 1);
-    budget = baseBudget + leftover;
+    budget = base + leftover;
   }
   return budget;
 }
-
-function openBaseBudgetPrompt(){
-  const v = prompt('매달 기본 예산을 입력하세요 (원)\n다음 달부터 "기본예산 + 지난달 남은 예산"으로 자동 계산돼요.', baseBudget || '');
-  if(v===null) return;
-  const num = Number(v);
-  if(isNaN(num) || num<0) return;
-  fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setBaseBudget', baseBudget:num}) })
-    .then(()=>{ baseBudget = num; render(); showToast('기본예산을 설정했어요'); });
+function spendInMonth(ym){
+  return transactions.filter(t=>t.type==='withdraw' && (t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
 }
-function prevMonthKey(ym){
-  const [y,m] = ym.split('-').map(Number);
-  const d = new Date(y, m-2, 1);
-  return d.toISOString().slice(0,7);
+function categorySpend(cat, ym){
+  return transactions.filter(t=>t.type==='withdraw' && t.category===cat && (t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
+}
+function effectiveBudget(ym){ return effectiveBudgetGeneric(ym, Number(salary.amount)||0, spendInMonth); }
+function categoryEffectiveBudget(cat, base, ym){ return effectiveBudgetGeneric(ym, base, (m)=>categorySpend(cat,m)); }
+
+function totalAllocated(excludeCat){
+  const catSum = categories.filter(c=>c.category!==excludeCat).reduce((s,c)=>s+(Number(c.budget)||0),0);
+  const savSum = savingsList.filter(s=>s.name!==excludeCat).reduce((s,x)=>s+(Number(x.monthlyAmount)||0),0);
+  return catSum + savSum;
 }
 
+// ---------- 렌더 ----------
 function render(){
   const ym = selectedMonth;
   document.getElementById('monthLabel').textContent = monthLabelOf(ym);
@@ -459,55 +505,61 @@ function render(){
   document.getElementById('withdrawLabel').textContent = isCurrent ? '이번 달 출금' : monthLabelOf(ym)+' 출금';
 
   let balance = 0, mDeposit = 0, mWithdraw = 0;
-  const catSpend = {};
   transactions.forEach(t=>{
     const amt = Number(t.amount)||0;
     if(t.type==='deposit') balance += amt; else balance -= amt;
     if((t.date||'').slice(0,7) === ym){
       if(t.type==='deposit') mDeposit += amt; else mWithdraw += amt;
-      if(t.type==='withdraw' && t.category){
-        catSpend[t.category] = (catSpend[t.category]||0) + amt;
-      }
     }
   });
-
   document.getElementById('balanceValue').textContent = fmt(balance);
   document.getElementById('monthDeposit').textContent = '+' + fmt(mDeposit);
   document.getElementById('monthWithdraw').textContent = '-' + fmt(mWithdraw);
 
   const totalBudget = effectiveBudget(ym);
-  if(totalBudget > 0 || baseBudget > 0){
+  if(salary.amount > 0){
     const pct = Math.min(100, (mWithdraw/Math.max(totalBudget,1))*100);
     document.getElementById('budgetFill').style.width = pct + '%';
     document.getElementById('budgetFill').style.background = pct >= 100 ? 'var(--withdraw)' : 'var(--accent-2)';
     document.getElementById('budgetText').textContent = `${monthLabelOf(ym)} 예산 ${fmt(totalBudget)} 중 ${fmt(totalBudget-mWithdraw)} 남음`;
   } else {
     document.getElementById('budgetFill').style.width = '0%';
-    document.getElementById('budgetText').textContent = '기본예산 미설정';
+    document.getElementById('budgetText').textContent = '급여 미설정';
   }
 
-  // 카테고리별 현황
+  // 배정 요약
+  const allocated = totalAllocated(null);
+  const remainAlloc = (Number(salary.amount)||0) - allocated;
+  document.getElementById('allocSummaryMain').textContent = salary.amount>0
+    ? `월급 ${fmt(salary.amount)} 중 배정 ${fmt(allocated)} · 남음 ${fmt(remainAlloc)}`
+    : '급여를 설정하면 카테고리별 예산 배정 한도를 알 수 있어요.';
+
+  // 카테고리별 현황 (일반 카테고리 + 적금)
+  const combined = [
+    ...categories.map(c=>({category:c.category, budget:Number(c.budget)||0, isSaving:false})),
+    ...savingsList.map(s=>({category:s.name, budget:Number(s.monthlyAmount)||0, isSaving:true}))
+  ];
   const catListEl = document.getElementById('catList');
-  if(categories.length === 0){
+  if(combined.length === 0){
     catListEl.innerHTML = '<div class="cat-empty empty">카테고리를 등록하면 여기에 표시돼요.</div>';
   } else {
-    catListEl.innerHTML = categories.map(c=>{
-      const spent = catSpend[c.category] || 0;
-      const budget = Number(c.budget)||0;
-      const pct = budget>0 ? Math.min(100,(spent/budget)*100) : (spent>0?100:0);
-      const over = budget>0 && spent>budget;
+    catListEl.innerHTML = combined.map(c=>{
+      const spent = categorySpend(c.category, ym);
+      const effBudget = c.isSaving ? c.budget : categoryEffectiveBudget(c.category, c.budget, ym);
+      const pct = effBudget>0 ? Math.min(100,(spent/effBudget)*100) : (spent>0?100:0);
+      const over = effBudget>0 && spent>effBudget;
       return `
-        <div class="cat-card" style="cursor:pointer;" onclick="filterByTag('${encodeURIComponent(c.category)}')">
+        <div class="cat-card ${c.isSaving?'is-saving':''}" onclick="filterByTag('${encodeURIComponent(c.category)}')">
           <div class="cat-card-top">
-            <span class="name">${escapeHtml(c.category)}</span>
-            <span class="nums"><b>${fmt(spent)}</b> / ${budget>0?fmt(budget):'예산없음'}</span>
+            <span class="name">${escapeHtml(c.category)}${c.isSaving?'<span class="badge">적금</span>':''}</span>
+            <span class="nums"><b>${fmt(spent)}</b> / ${effBudget>0?fmt(effBudget):'예산없음'}</span>
           </div>
           <div class="cat-bar"><div class="cat-bar-fill ${over?'over':''}" style="width:${pct}%"></div></div>
         </div>`;
     }).join('');
   }
 
-  // 적금 현황
+  // 적금 현황 (회차/만기)
   const savListEl = document.getElementById('savList');
   if(savingsList.length === 0){
     savListEl.innerHTML = '<div class="cat-empty empty">적금을 등록하면 여기에 표시돼요.</div>';
@@ -521,16 +573,35 @@ function render(){
       const pct = Math.min(100, (round/totalRounds)*100);
       const dday = daysUntil(s.endDate);
       return `
-        <div class="sav-card" style="cursor:pointer;" onclick="filterByTag('${encodeURIComponent(s.name)}')">
-          <div class="sav-top">
-            <span class="name">${escapeHtml(s.name)}</span>
-            <span class="round">${round}/${totalRounds}회차</span>
-          </div>
+        <div class="sav-card" onclick="filterByTag('${encodeURIComponent(s.name)}')">
+          <div class="sav-top"><span class="name">${escapeHtml(s.name)}</span><span class="round">${round}/${totalRounds}회차</span></div>
           <div class="sav-meta">만기 ${s.endDate} ${dday>=0?`(D-${dday})`:'(만기 지남)'} · 월 ${fmt(s.monthlyAmount)}</div>
           <div class="sav-amt">${fmt(paidAmt)} <span class="target">/ 목표 ${fmt(target)}</span></div>
           <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:var(--savings);"></div></div>
         </div>`;
     }).join('');
+  }
+
+  // 지출 그래프 (선택 월 카테고리별 지출 비중)
+  const chartBox = document.getElementById('chartBox');
+  const spendMap = {};
+  transactions.forEach(t=>{
+    if(t.type==='withdraw' && (t.date||'').slice(0,7)===ym){
+      const key = t.category || '미분류';
+      spendMap[key] = (spendMap[key]||0) + (Number(t.amount)||0);
+    }
+  });
+  const entries = Object.entries(spendMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(entries.length===0){
+    chartBox.innerHTML = '<div class="empty" style="border:none;padding:12px;">이 달의 지출 내역이 없어요.</div>';
+  } else {
+    const max = entries[0][1];
+    chartBox.innerHTML = entries.map(([cat,amt])=>`
+      <div class="chart-row">
+        <div class="clabel">${escapeHtml(cat)}</div>
+        <div class="ctrack"><div class="cfill" style="width:${Math.max(4,(amt/max)*100)}%"></div></div>
+        <div class="camt">${fmt(amt)}</div>
+      </div>`).join('');
   }
 
   // 카테고리 선택 옵션 (드롭다운)
@@ -593,7 +664,6 @@ function setFilter(f){
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.filter===f));
   render();
 }
-
 function filterByTag(encodedName){
   tagFilter = decodeURIComponent(encodedName);
   render();
@@ -634,19 +704,14 @@ async function submitEntry(){
   const title = document.getElementById('fTitle').value.trim();
   const amount = Number(document.getElementById('fAmount').value);
   const memo = document.getElementById('fMemo').value.trim();
-  if(!title || !amount || amount<=0){
-    showToast('항목과 금액을 입력해주세요');
-    return;
-  }
+  if(!title || !amount || amount<=0){ showToast('항목과 금액을 입력해주세요'); return; }
   const payload = { action:'add', date, type:currentType, category, title, amount, memo };
   try{
     await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
     showToast('저장했어요');
     closeSheet();
     loadData();
-  }catch(err){
-    showToast('저장 실패, 다시 시도해주세요');
-  }
+  }catch(err){ showToast('저장 실패, 다시 시도해주세요'); }
 }
 
 async function deleteEntry(id){
@@ -655,9 +720,7 @@ async function deleteEntry(id){
     await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'delete', id}) });
     showToast('삭제했어요');
     loadData();
-  }catch(err){
-    showToast('삭제 실패');
-  }
+  }catch(err){ showToast('삭제 실패'); }
 }
 
 // 카테고리 관리
@@ -672,6 +735,11 @@ function closeCatManage(){
   document.getElementById('newCatBudget').value='';
 }
 function renderCatManage(){
+  const allocated = totalAllocated(null);
+  const remain = (Number(salary.amount)||0) - allocated;
+  document.getElementById('allocSummary').innerHTML = salary.amount>0
+    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> (적금 포함) · 남음 <b>${fmt(remain)}</b>`
+    : '먼저 상단 "급여 설정"에서 월급을 등록하면 배정 한도를 계산해드려요.';
   const el = document.getElementById('catManageList');
   if(categories.length===0){
     el.innerHTML = '<div class="empty" style="padding:16px;">등록된 카테고리가 없어요.</div>';
@@ -689,6 +757,10 @@ async function addCategory(){
   const name = document.getElementById('newCatName').value.trim();
   const budget = Number(document.getElementById('newCatBudget').value) || 0;
   if(!name){ showToast('카테고리명을 입력해주세요'); return; }
+  if(salary.amount>0){
+    const remain = (Number(salary.amount)||0) - totalAllocated(null);
+    if(budget > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); return; }
+  }
   await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setCategoryBudget', category:name, budget}) });
   document.getElementById('newCatName').value='';
   document.getElementById('newCatBudget').value='';
@@ -699,6 +771,14 @@ async function addCategory(){
 async function updateCategoryBudget(encodedName, value){
   const category = decodeURIComponent(encodedName);
   const budget = Number(value) || 0;
+  if(salary.amount>0){
+    const remain = (Number(salary.amount)||0) - totalAllocated(category);
+    if(budget > remain){
+      showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`);
+      renderCatManage();
+      return;
+    }
+  }
   await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setCategoryBudget', category, budget}) });
   await loadData();
   showToast('예산을 수정했어요');
@@ -726,6 +806,11 @@ function closeSavManage(){
   document.getElementById('newSavEnd').value='';
 }
 function renderSavManage(){
+  const allocated = totalAllocated(null);
+  const remain = (Number(salary.amount)||0) - allocated;
+  document.getElementById('allocSummarySav').innerHTML = salary.amount>0
+    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> (카테고리 포함) · 남음 <b>${fmt(remain)}</b>`
+    : '먼저 "급여 설정"에서 월급을 등록하면 배정 한도를 계산해드려요.';
   const el = document.getElementById('savManageList');
   if(savingsList.length===0){
     el.innerHTML = '<div class="empty" style="padding:16px;">등록된 적금이 없어요.</div>';
@@ -738,6 +823,7 @@ function renderSavManage(){
         <div><label>월 납입액</label><input class="mono" type="number" value="${s.monthlyAmount}" onchange="updateSavings('${encodeURIComponent(s.name)}','monthlyAmount',this.value)"></div>
         <div><label>만기일</label><input type="date" value="${s.endDate}" onchange="updateSavings('${encodeURIComponent(s.name)}','endDate',this.value)"></div>
       </div>
+      <div style="font-size:.7rem;color:var(--ink-soft);margin-top:6px;">시작일: ${s.startDate} (수정 불가 · 이미 생성된 회차 유지)</div>
     </div>
   `).join('');
 }
@@ -747,6 +833,10 @@ async function addSavings(){
   const startDate = document.getElementById('newSavStart').value || todayStr();
   const endDate = document.getElementById('newSavEnd').value;
   if(!name || !monthlyAmount || !endDate){ showToast('이름, 월납입액, 만기일을 입력해주세요'); return; }
+  if(salary.amount>0){
+    const remain = (Number(salary.amount)||0) - totalAllocated(null);
+    if(monthlyAmount > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); return; }
+  }
   await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSavings', name, monthlyAmount, startDate, endDate}) });
   await loadData();
   renderSavManage();
@@ -759,6 +849,14 @@ async function updateSavings(encodedName, field, value){
   const name = decodeURIComponent(encodedName);
   const existing = savingsList.find(s=>s.name===name);
   if(!existing) return;
+  if(field==='monthlyAmount' && salary.amount>0){
+    const remain = (Number(salary.amount)||0) - totalAllocated(name);
+    if(Number(value) > remain){
+      showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`);
+      renderSavManage();
+      return;
+    }
+  }
   const payload = { action:'setSavings', name, monthlyAmount:existing.monthlyAmount, startDate:existing.startDate, endDate:existing.endDate };
   payload[field] = field==='monthlyAmount' ? Number(value) : value;
   await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
@@ -772,6 +870,24 @@ async function removeSavings(encodedName){
   await loadData();
   renderSavManage();
   showToast('적금을 삭제했어요');
+}
+
+// 급여 관리
+function openSalaryManage(){
+  if(!checkSetup()) return;
+  document.getElementById('salPayDay').value = salary.payDay || 25;
+  document.getElementById('salAmount').value = salary.amount || '';
+  document.getElementById('salOverlay').classList.add('open');
+}
+function closeSalaryManage(){ document.getElementById('salOverlay').classList.remove('open'); }
+async function saveSalary(){
+  const payDay = Math.min(31, Math.max(1, Number(document.getElementById('salPayDay').value) || 25));
+  const amount = Number(document.getElementById('salAmount').value) || 0;
+  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSalary', payDay, amount}) });
+  salary = { payDay, amount };
+  closeSalaryManage();
+  loadData();
+  showToast('급여 정보를 저장했어요');
 }
 
 if('serviceWorker' in navigator){
