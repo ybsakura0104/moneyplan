@@ -14,6 +14,8 @@
     --paper:#F7F3EA; --paper-2:#EFE9D8; --ink:#23262B; --ink-soft:#5B5A52; --rule:#D8D0BC;
     --deposit:#2F6F4E; --deposit-bg:#E4EEE6; --withdraw:#B4432D; --withdraw-bg:#F5E5DF;
     --accent:#1F3A5F; --accent-2:#2B4E7A; --savings:#8A6D2F; --savings-bg:#F1E9D4;
+    --sub:#6B4E9E; --sub-bg:#EDE6F5;
+    --pending:#C97A1A; --pending-bg:#FBECD8;
     font-size:16px;
   }
   *{box-sizing:border-box;}
@@ -35,7 +37,7 @@
   .passbook-row + .passbook-row{ border-top:1px solid var(--paper-2); }
   .passbook-row .label{ font-size:.8rem; color:var(--ink-soft); }
   .passbook-row .value{ font-size:1.05rem; font-weight:600; }
-  .passbook-row.total .value{ font-size:1.65rem; font-weight:700; }
+  .passbook-row.total .value{ font-size:1.65rem; font-weight:700; color:var(--pending); }
   .passbook-row.total .label{ font-size:.85rem; }
   .v-deposit{ color:var(--deposit); } .v-withdraw{ color:var(--withdraw); }
 
@@ -48,12 +50,26 @@
   .section-sub{ margin:0 16px 8px; font-size:.72rem; color:var(--ink-soft); }
   .link-btn{ background:none;border:none;color:var(--accent-2);font-size:.78rem;font-weight:600;cursor:pointer;padding:0; }
 
+  .pending-box{ margin:0 16px 4px; background:var(--pending-bg); border:1px solid var(--pending); border-radius:12px; padding:12px 14px; }
+  .pending-box.ok{ background:var(--deposit-bg); border-color:var(--deposit); }
+  .pending-row{ display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px dashed rgba(0,0,0,.08); font-size:.85rem; }
+  .pending-row:last-child{ border-bottom:none; }
+  .pending-row .pinfo{ flex:1; min-width:0; }
+  .pending-row .ptitle{ font-weight:600; }
+  .pending-row .pmeta{ font-size:.7rem; color:var(--ink-soft); }
+  .pending-row .pamt{ font-family:'IBM Plex Mono',monospace; font-weight:700; margin-right:8px; white-space:nowrap; }
+  .settle-btn{ background:var(--pending); color:#fff; border:none; border-radius:8px; padding:6px 10px; font-size:.72rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+
   .cat-list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
   .cat-card{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:11px 14px; cursor:pointer; }
   .cat-card.is-saving{ border-left:4px solid var(--savings); }
+  .cat-card.is-sub{ border-left:4px solid var(--sub); }
   .cat-card-top{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:6px; }
   .cat-card-top .name{ font-weight:700; }
-  .cat-card-top .name .badge{ font-size:.65rem; background:var(--savings-bg); color:var(--savings); padding:1px 6px; border-radius:20px; margin-left:5px; font-weight:700; }
+  .cat-card-top .name .badge{ font-size:.65rem; padding:1px 6px; border-radius:20px; margin-left:5px; font-weight:700; }
+  .badge.b-saving{ background:var(--savings-bg); color:var(--savings); }
+  .badge.b-sub{ background:var(--sub-bg); color:var(--sub); }
+  .badge.b-arrow{ background:var(--paper-2); color:var(--ink-soft); }
   .cat-card-top .nums{ font-size:.78rem; color:var(--ink-soft); }
   .cat-card-top .nums b{ color:var(--ink); font-family:'IBM Plex Mono',monospace; }
   .cat-bar{ height:6px; border-radius:4px; background:var(--paper-2); overflow:hidden; }
@@ -62,9 +78,12 @@
   .cat-empty{ padding:8px; }
 
   .sav-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:12px; padding:11px 14px; cursor:pointer; }
+  .sub-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--sub); border-radius:12px; padding:11px 14px; cursor:pointer; }
+  .sav-card.cancelled, .sub-card.cancelled{ opacity:.5; }
   .sav-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; }
   .sav-top .name{ font-weight:700; font-size:.9rem; }
   .sav-top .round{ font-size:.75rem; background:var(--savings-bg); color:var(--savings); padding:2px 8px; border-radius:20px; font-weight:700; }
+  .sub-top .round{ font-size:.75rem; background:var(--sub-bg); color:var(--sub); padding:2px 8px; border-radius:20px; font-weight:700; }
   .sav-meta{ font-size:.72rem; color:var(--ink-soft); margin-bottom:6px; }
   .sav-amt{ font-size:.95rem; font-weight:700; font-family:'IBM Plex Mono',monospace; margin-bottom:6px; }
   .sav-amt .target{ font-size:.75rem; color:var(--ink-soft); font-weight:500; }
@@ -77,25 +96,27 @@
   .chart-row .cfill{ height:100%; background:linear-gradient(90deg,var(--accent-2),var(--accent)); border-radius:4px; }
   .chart-row .camt{ width:74px; flex-shrink:0; text-align:right; font-size:.72rem; font-family:'IBM Plex Mono',monospace; }
 
-  .month-nav{ display:flex; align-items:center; justify-content:center; gap:16px; margin:18px 16px 12px; }
+  .month-nav{ display:flex; align-items:center; justify-content:center; gap:16px; margin:18px 16px 10px; }
   .month-nav button{ background:var(--paper-2); border:none; width:34px;height:34px;border-radius:50%; font-size:1rem; color:var(--ink); cursor:pointer; }
   .month-nav button:disabled{ opacity:.35; cursor:default; }
   .month-nav .m-label{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:1rem; min-width:110px; text-align:center; }
 
-  .tabs{ display:flex; gap:6px; margin:0 16px 12px; background:var(--paper-2); border-radius:10px; padding:4px; }
-  .tabs button{ flex:1; border:none; background:transparent; padding:9px 0; border-radius:8px; font-size:.85rem; font-weight:600; color:var(--ink-soft); cursor:pointer; }
-  .tabs button.active{ background:#fff; color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08); }
+  .filter-row{ display:flex; align-items:center; gap:6px; margin:0 16px 12px; font-size:.8rem; color:var(--ink-soft); }
+  .filter-row input{ width:auto; }
 
   .list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
   .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); font-size:.85rem; background:#fff; border:1px dashed var(--rule); border-radius:12px; }
   .item{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
-  .item .tagbar{ width:8px; align-self:stretch; border-radius:4px; flex-shrink:0; }
-  .tagbar.d{ background:var(--deposit); } .tagbar.w{ background:var(--withdraw); }
+  .item.unsettled{ border-color:var(--pending); background:var(--pending-bg); }
+  .item .tagbar{ width:8px; align-self:stretch; border-radius:4px; flex-shrink:0; background:var(--withdraw); }
   .item .info{ flex:1; min-width:0; }
   .item .title{ font-weight:600; font-size:.95rem; }
   .item .meta{ font-size:.72rem; color:var(--ink-soft); margin-top:2px; }
-  .item .catchip{ display:inline-block; background:var(--paper-2); color:var(--ink-soft); font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; cursor:pointer; }
-  .item .amt{ font-size:1rem; font-weight:700; white-space:nowrap; }
+  .item .catchip{ display:inline-block; background:var(--paper-2); color:var(--ink-soft); font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; margin-right:4px; cursor:pointer; }
+  .item .settlechip{ display:inline-block; font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; cursor:pointer; font-weight:700; }
+  .settlechip.on{ background:var(--deposit-bg); color:var(--deposit); }
+  .settlechip.off{ background:var(--pending); color:#fff; }
+  .item .amt{ font-size:1rem; font-weight:700; white-space:nowrap; color:var(--withdraw); }
   .item .del{ background:none;border:none;color:var(--ink-soft);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
 
   .fab{ position:fixed; right:20px; bottom:24px; width:58px; height:58px; border-radius:50%; background:var(--accent); color:var(--paper); border:none; font-size:1.8rem; line-height:1; box-shadow:0 6px 18px rgba(31,58,95,.4); cursor:pointer; display:flex; align-items:center; justify-content:center; }
@@ -104,14 +125,12 @@
   .sheet-overlay.open{ display:flex; }
   .sheet{ background:var(--paper); width:100%; max-width:480px; border-radius:18px 18px 0 0; padding:18px 20px calc(20px + env(safe-area-inset-bottom)); max-height:88vh; overflow:auto; }
   .sheet h2{ font-family:'Noto Serif KR',serif; font-size:1.15rem; margin:2px 0 16px; display:flex; justify-content:space-between; align-items:center; }
-  .type-switch{ display:flex; gap:8px; margin-bottom:14px; }
-  .type-switch button{ flex:1; padding:12px 0; border-radius:10px; border:1.5px solid var(--rule); background:#fff; font-weight:700; font-size:.9rem; cursor:pointer; color:var(--ink-soft); }
-  .type-switch button.sel.d{ background:var(--deposit-bg); border-color:var(--deposit); color:var(--deposit); }
-  .type-switch button.sel.w{ background:var(--withdraw-bg); border-color:var(--withdraw); color:var(--withdraw); }
   label{ font-size:.78rem; color:var(--ink-soft); display:block; margin:12px 0 5px; }
   input, textarea, select{ width:100%; border:1.5px solid var(--rule); border-radius:10px; padding:11px 12px; font-size:.95rem; background:#fff; color:var(--ink); font-family:inherit; appearance:none; -webkit-appearance:none; }
   select{ background-image:linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%), linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%); background-position: calc(100% - 18px) center, calc(100% - 13px) center; background-size: 5px 5px, 5px 5px; background-repeat:no-repeat; }
   input.mono{ font-family:'IBM Plex Mono',monospace; }
+  .checkline{ display:flex; align-items:center; gap:8px; margin-top:14px; font-size:.88rem; }
+  .checkline input{ width:auto; }
   .sheet-actions{ display:flex; gap:8px; margin-top:18px; }
   .btn{ flex:1; padding:13px 0; border-radius:10px; border:none; font-weight:700; font-size:.92rem; cursor:pointer; }
   .btn.primary{ background:var(--accent); color:var(--paper); }
@@ -119,19 +138,24 @@
   .btn.small{ flex:none; padding:8px 14px; font-size:.8rem; }
   .close-x{ background:none;border:none;font-size:1.2rem;color:var(--ink-soft);cursor:pointer; }
 
-  .cat-manage-row{ display:flex; gap:8px; align-items:center; margin-bottom:8px; }
-  .cat-manage-row input{ flex:1; }
-  .cat-manage-row input.amt-in{ max-width:120px; }
-  .cat-manage-row button{ background:none;border:none;color:var(--withdraw);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
-  .cat-manage-add{ display:flex; gap:8px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); flex-wrap:wrap; }
-  .cat-manage-add input{ flex:1; min-width:90px; }
+  .cat-manage-row{ border:1px solid var(--rule); border-radius:10px; padding:10px; margin-bottom:8px; }
+  .cat-manage-row .r1{ display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+  .cat-manage-row .r1 input{ flex:1; }
+  .cat-manage-row .r1 input.amt-in{ max-width:110px; }
+  .cat-manage-row .r1 button{ background:none;border:none;color:var(--withdraw);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
+  .cat-manage-add{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); }
   .alloc-summary{ font-size:.78rem; color:var(--ink-soft); background:var(--paper-2); border-radius:8px; padding:8px 10px; margin-bottom:10px; }
   .alloc-summary b{ color:var(--ink); }
 
   .sav-manage-row{ border:1px solid var(--rule); border-radius:10px; padding:10px; margin-bottom:10px; }
   .sav-manage-row .row1{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
   .sav-manage-row .row1 strong{ font-size:.88rem; }
-  .sav-manage-row .row1 button{ background:none;border:none;color:var(--withdraw);font-size:1rem;cursor:pointer; }
+  .sav-manage-row .row1 .rowbtns{ display:flex; gap:6px; }
+  .sav-manage-row .row1 button{ background:none;border:none;font-size:.85rem;cursor:pointer; }
+  .sav-manage-row .del-btn{ color:var(--withdraw); }
+  .toggle-btn{ border-radius:20px; padding:4px 10px; font-weight:700; border:none; }
+  .toggle-btn.active{ background:var(--deposit-bg); color:var(--deposit); }
+  .toggle-btn.inactive{ background:var(--paper-2); color:var(--ink-soft); }
   .sav-manage-row .grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .sav-manage-row label{ margin:6px 0 3px; }
 
@@ -149,10 +173,7 @@
 <body>
 
 <header class="app-header">
-  <div>
-    <h1>용돈 통장</h1>
-    <p id="dateLabel">-</p>
-  </div>
+  <div><h1>용돈 통장</h1><p id="dateLabel">-</p></div>
   <button class="gear-btn" onclick="openSetup()">⚙</button>
 </header>
 
@@ -169,16 +190,12 @@
   <div class="passbook-stub"><span></span><span></span><span></span><span></span><span></span><span></span></div>
   <div class="passbook-body">
     <div class="passbook-row total">
-      <span class="label">전체 잔액</span>
-      <span class="value mono" id="balanceValue">0원</span>
+      <span class="label">정산 대기 금액</span>
+      <span class="value mono" id="pendingValue">0원</span>
     </div>
     <div class="passbook-row">
-      <span class="label" id="depositLabel">입금</span>
-      <span class="value mono v-deposit" id="monthDeposit">+0원</span>
-    </div>
-    <div class="passbook-row">
-      <span class="label" id="withdrawLabel">출금</span>
-      <span class="value mono v-withdraw" id="monthWithdraw">-0원</span>
+      <span class="label" id="withdrawLabel">이번 달 지출</span>
+      <span class="value mono v-withdraw" id="monthWithdraw">0원</span>
     </div>
     <div class="budget-bar"><div class="budget-bar-fill" id="budgetFill" style="width:0%"></div></div>
     <div class="budget-line">
@@ -187,6 +204,9 @@
     </div>
   </div>
 </div>
+
+<div class="section-head"><h3>정산 대기 내역</h3></div>
+<div id="pendingBox" class="pending-box ok"><div style="text-align:center;font-size:.85rem;">불러오는 중...</div></div>
 
 <div class="section-head">
   <h3>카테고리별 현황</h3>
@@ -200,6 +220,12 @@
   <button class="link-btn" onclick="openSavManage()">적금 관리</button>
 </div>
 <div class="cat-list" id="savList"><div class="cat-empty empty">적금을 등록하면 여기에 표시돼요.</div></div>
+
+<div class="section-head">
+  <h3>구독 현황</h3>
+  <button class="link-btn" onclick="openSubManage()">구독 관리</button>
+</div>
+<div class="cat-list" id="subList"><div class="cat-empty empty">구독을 등록하면 여기에 표시돼요.</div></div>
 
 <div class="section-head"><h3>지출 그래프</h3></div>
 <div class="chart-box" id="chartBox"><div class="empty" style="border:none;padding:12px;">이번 달 지출 내역이 쌓이면 그래프가 표시돼요.</div></div>
@@ -215,10 +241,9 @@
   <button onclick="clearTagFilter()">해제 ✕</button>
 </div>
 
-<div class="tabs" id="tabsBar">
-  <button class="active" data-filter="all" onclick="setFilter('all')">전체</button>
-  <button data-filter="deposit" onclick="setFilter('deposit')">입금</button>
-  <button data-filter="withdraw" onclick="setFilter('withdraw')">출금</button>
+<div class="filter-row" id="filterRow">
+  <input type="checkbox" id="unsettledOnlyToggle" onchange="render()">
+  <label for="unsettledOnlyToggle">미정산 내역만 보기</label>
 </div>
 
 <div class="list" id="list"><div class="empty">불러오는 중...</div></div>
@@ -228,11 +253,7 @@
 <!-- 내역 추가 -->
 <div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this)closeSheet()">
   <div class="sheet">
-    <h2>내역 추가 <button class="close-x" onclick="closeSheet()">✕</button></h2>
-    <div class="type-switch">
-      <button id="btnDeposit" class="sel d" onclick="selectType('deposit')">입금</button>
-      <button id="btnWithdraw" class="w" onclick="selectType('withdraw')">출금</button>
-    </div>
+    <h2>지출 내역 추가 <button class="close-x" onclick="closeSheet()">✕</button></h2>
     <label>날짜</label>
     <input id="fDate" type="date">
     <label>카테고리</label>
@@ -244,6 +265,10 @@
     <input id="fAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
     <label>메모 (선택)</label>
     <textarea id="fMemo" rows="2" placeholder="메모"></textarea>
+    <div class="checkline">
+      <input id="fSettled" type="checkbox">
+      <label for="fSettled" style="margin:0;">계좌 이체까지 이미 정산했어요</label>
+    </div>
     <div class="sheet-actions">
       <button class="btn ghost" onclick="closeSheet()">취소</button>
       <button class="btn primary" onclick="submitEntry()">저장</button>
@@ -258,9 +283,13 @@
     <div class="alloc-summary" id="allocSummary"></div>
     <div id="catManageList"></div>
     <div class="cat-manage-add">
-      <input id="newCatName" placeholder="새 카테고리명">
-      <input id="newCatBudget" class="mono amt-in" type="number" inputmode="numeric" placeholder="월예산">
-      <button class="btn primary small" onclick="addCategory()">추가</button>
+      <label>새 카테고리명</label>
+      <input id="newCatName" placeholder="예: 쇼핑">
+      <label>월 예산</label>
+      <input id="newCatBudget" class="mono" type="number" inputmode="numeric" placeholder="0">
+      <label>남은 예산을 이월할 대상 (선택)</label>
+      <select id="newCatRolloverTo"><option value="">없음 (본인에게 이월)</option></select>
+      <button class="btn primary" style="margin-top:12px;" onclick="addCategory()">추가</button>
     </div>
   </div>
 </div>
@@ -285,18 +314,35 @@
   </div>
 </div>
 
+<!-- 구독 관리 -->
+<div class="sheet-overlay" id="subOverlay" onclick="if(event.target===this)closeSubManage()">
+  <div class="sheet">
+    <h2>구독 관리 <button class="close-x" onclick="closeSubManage()">✕</button></h2>
+    <div class="alloc-summary" id="allocSummarySub"></div>
+    <div id="subManageList"></div>
+    <div style="border-top:1px dashed var(--rule);padding-top:12px;margin-top:6px;">
+      <label>구독 이름</label>
+      <input id="newSubName" placeholder="예: 스포티파이">
+      <label>월 결제액</label>
+      <input id="newSubAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
+      <div style="display:flex;gap:8px;">
+        <div style="flex:1;"><label>결제일 (매달 며칠)</label><input id="newSubDay" type="number" min="1" max="31" placeholder="15"></div>
+        <div style="flex:1;"><label>시작일</label><input id="newSubStart" type="date"></div>
+      </div>
+      <button class="btn primary" style="margin-top:12px;" onclick="addSubscription()">구독 추가</button>
+    </div>
+  </div>
+</div>
+
 <!-- 급여 설정 -->
 <div class="sheet-overlay" id="salOverlay" onclick="if(event.target===this)closeSalaryManage()">
   <div class="sheet">
     <h2>급여 설정 <button class="close-x" onclick="closeSalaryManage()">✕</button></h2>
-    <p style="font-size:.8rem;color:var(--ink-soft);margin:0 0 10px;">설정한 날짜가 지나면 자동으로 입금 내역이 생성돼요. 실제 입금일이 바뀌면 날짜를 수정해주세요.</p>
-    <label>급여일 (매달 며칠)</label>
-    <input id="salPayDay" type="number" min="1" max="31" placeholder="25">
-    <label>급여액</label>
+    <label>월 급여액 (예산 기준액)</label>
     <input id="salAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
     <label>이월 시작월 (선택)</label>
     <input id="salRolloverStart" type="month">
-    <p style="font-size:.72rem;color:var(--ink-soft);margin:4px 0 0;">지정한 달부터 "예산 이월" 계산을 시작해요. 그 이전 내역은 이월 계산에 반영되지 않아요. 비워두면 가장 오래된 내역부터 자동 계산됩니다.</p>
+    <p style="font-size:.72rem;color:var(--ink-soft);margin:4px 0 0;">지정한 달부터 예산 이월 계산을 시작해요. 비워두면 가장 오래된 내역부터 자동 계산됩니다.</p>
     <div class="sheet-actions">
       <button class="btn ghost" onclick="closeSalaryManage()">취소</button>
       <button class="btn primary" onclick="saveSalary()">저장</button>
@@ -312,9 +358,8 @@ let API_URL = localStorage.getItem(LS_API_KEY) || '';
 let transactions = [];
 let categories = [];
 let savingsList = [];
-let salary = { payDay: 25, amount: 0, rolloverStart: '' };
-let currentFilter = 'all';
-let currentType = 'deposit';
+let subscriptions = [];
+let salary = { amount: 0, rolloverStart: '' };
 let tagFilter = null;
 let selectedMonth = new Date().toISOString().slice(0,7);
 
@@ -329,6 +374,9 @@ function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function post(payload){
+  return fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
 }
 
 function saveApiUrl(){
@@ -372,7 +420,8 @@ async function loadData(){
     transactions = data.transactions || [];
     categories = data.categories || [];
     savingsList = data.savings || [];
-    salary = data.salary || { payDay:25, amount:0, rolloverStart:'' };
+    subscriptions = data.subscriptions || [];
+    salary = data.salary || { amount:0, rolloverStart:'' };
 
     const created = await reconcileAuto();
     if(created){
@@ -397,18 +446,13 @@ function ymDiff(a,b){
   const [ay,am]=a.split('-').map(Number), [by,bm]=b.split('-').map(Number);
   return (ay-by)*12+(am-bm);
 }
-function lastDayOfMonth(ym){
-  const [y,m] = ym.split('-').map(Number);
-  return new Date(y, m, 0).getDate();
-}
+function lastDayOfMonth(ym){ const [y,m] = ym.split('-').map(Number); return new Date(y, m, 0).getDate(); }
 function monthLabelOf(ym){ const [y,m] = ym.split('-'); return `${y}년 ${Number(m)}월`; }
 function monthsBetween(startStr, endStr){
   const s = new Date(startStr), e = new Date(endStr);
   return (e.getFullYear()-s.getFullYear())*12 + (e.getMonth()-s.getMonth()) + 1;
 }
-function daysUntil(dateStr){
-  return Math.ceil((new Date(dateStr) - new Date(todayStr()))/86400000);
-}
+function daysUntil(dateStr){ return Math.ceil((new Date(dateStr) - new Date(todayStr()))/86400000); }
 
 function changeMonth(delta){
   const next = ymAdd(selectedMonth, delta);
@@ -417,7 +461,7 @@ function changeMonth(delta){
   render();
 }
 
-// ---------- 자동 내역 생성 (월급 / 적금) ----------
+// ---------- 자동 내역 생성 (적금 / 구독) ----------
 async function reconcileAuto(){
   let created = false;
   const todayYm = currentMonthKey();
@@ -429,14 +473,14 @@ async function reconcileAuto(){
     const lastYm = endYm < todayYm ? endYm : todayYm;
     let cursor = startYm;
     while(cursor <= lastYm){
-      const exists = transactions.some(t=>t.type==='withdraw' && t.category===s.name && (t.date||'').slice(0,7)===cursor);
+      const exists = transactions.some(t=>t.category===s.name && (t.date||'').slice(0,7)===cursor);
       if(!exists){
         const day = Number(s.startDate.slice(8,10));
         const useDay = Math.min(day, lastDayOfMonth(cursor));
         const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
         if(new Date(dateStr) <= todayDate){
-          await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'add', date:dateStr, type:'withdraw', category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성'})});
-          transactions.push({id:-1, date:dateStr, type:'withdraw', category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성'});
+          await post({action:'add', date:dateStr, category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성', settled:false});
+          transactions.push({id:-1, date:dateStr, category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성', settled:false});
           created = true;
         }
       }
@@ -444,18 +488,20 @@ async function reconcileAuto(){
     }
   }
 
-  if(salary && salary.amount>0 && salary.payDay){
-    const salaryTx = transactions.filter(t=>t.type==='deposit' && t.category==='월급').sort((a,b)=>b.date.localeCompare(a.date));
-    let startYm = salaryTx.length>0 ? ymAdd(salaryTx[0].date.slice(0,7), 1) : todayYm;
+  for(const sub of subscriptions){
+    const startYm = sub.startDate.slice(0,7);
+    const effEnd = sub.active ? todayStr() : (sub.cancelDate || todayStr());
+    const effEndYm = effEnd.slice(0,7);
+    const lastYm = effEndYm < todayYm ? effEndYm : todayYm;
     let cursor = startYm;
-    while(cursor <= todayYm){
-      const exists = transactions.some(t=>t.type==='deposit' && t.category==='월급' && (t.date||'').slice(0,7)===cursor);
+    while(cursor <= lastYm){
+      const exists = transactions.some(t=>t.category===sub.name && (t.date||'').slice(0,7)===cursor);
       if(!exists){
-        const useDay = Math.min(salary.payDay, lastDayOfMonth(cursor));
+        const useDay = Math.min(Number(sub.day)||1, lastDayOfMonth(cursor));
         const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
-        if(new Date(dateStr) <= todayDate){
-          await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'add', date:dateStr, type:'deposit', category:'월급', title:'월급', amount:salary.amount, memo:'자동 생성'})});
-          transactions.push({id:-1, date:dateStr, type:'deposit', category:'월급', title:'월급', amount:salary.amount, memo:'자동 생성'});
+        if(new Date(dateStr) <= todayDate && dateStr <= effEnd){
+          await post({action:'add', date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:false});
+          transactions.push({id:-1, date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:false});
           created = true;
         }
       }
@@ -471,33 +517,53 @@ function earliestMonth(){
   const months = transactions.map(t=>(t.date||'').slice(0,7)).filter(Boolean);
   return months.length ? months.reduce((a,b)=> a<b?a:b) : currentMonthKey();
 }
-function effectiveBudgetGeneric(ym, base, spendFn){
+function spendInMonth(ym){
+  return transactions.filter(t=>(t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
+}
+function categorySpend(cat, ym){
+  return transactions.filter(t=>t.category===cat && (t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
+}
+function categoryTransferIn(targetCat, ym){
+  return categories.filter(c=>c.rolloverTo===targetCat)
+    .reduce((sum,c)=> sum + (Number(c.budget)||0) - categorySpend(c.category, ym), 0);
+}
+function effectiveBudget(ym){
   let anchor = earliestMonth();
-  if(ym < anchor) return base;
+  if(ym < anchor) return Number(salary.amount)||0;
   if(ymDiff(ym, anchor) > 24) anchor = ymAdd(ym, -24);
-  let budget = base;
+  let budget = Number(salary.amount)||0;
   let cursor = anchor;
+  const base = Number(salary.amount)||0;
   while(cursor < ym){
-    const spend = spendFn(cursor);
+    const spend = spendInMonth(cursor);
     const leftover = budget - spend;
     cursor = ymAdd(cursor, 1);
     budget = base + leftover;
   }
   return budget;
 }
-function spendInMonth(ym){
-  return transactions.filter(t=>t.type==='withdraw' && (t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
+function categoryEffectiveBudget(cat, base, ym){
+  const catObj = categories.find(c=>c.category===cat);
+  if(catObj && catObj.rolloverTo){ return base; }
+  let anchor = earliestMonth();
+  if(ym < anchor) return base;
+  if(ymDiff(ym, anchor) > 24) anchor = ymAdd(ym, -24);
+  let budget = base;
+  let cursor = anchor;
+  while(cursor < ym){
+    const spend = categorySpend(cat, cursor);
+    const leftover = budget - spend;
+    const transferIn = categoryTransferIn(cat, cursor);
+    cursor = ymAdd(cursor, 1);
+    budget = base + leftover + transferIn;
+  }
+  return budget;
 }
-function categorySpend(cat, ym){
-  return transactions.filter(t=>t.type==='withdraw' && t.category===cat && (t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
-}
-function effectiveBudget(ym){ return effectiveBudgetGeneric(ym, Number(salary.amount)||0, spendInMonth); }
-function categoryEffectiveBudget(cat, base, ym){ return effectiveBudgetGeneric(ym, base, (m)=>categorySpend(cat,m)); }
-
 function totalAllocated(excludeCat){
   const catSum = categories.filter(c=>c.category!==excludeCat).reduce((s,c)=>s+(Number(c.budget)||0),0);
   const savSum = savingsList.filter(s=>s.name!==excludeCat).reduce((s,x)=>s+(Number(x.monthlyAmount)||0),0);
-  return catSum + savSum;
+  const subSum = subscriptions.filter(s=>s.name!==excludeCat && s.active).reduce((s,x)=>s+(Number(x.amount)||0),0);
+  return catSum + savSum + subSum;
 }
 
 // ---------- 렌더 ----------
@@ -506,20 +572,28 @@ function render(){
   document.getElementById('monthLabel').textContent = monthLabelOf(ym);
   document.getElementById('nextMonthBtn').disabled = ym >= currentMonthKey();
   const isCurrent = ym === currentMonthKey();
-  document.getElementById('depositLabel').textContent = isCurrent ? '이번 달 입금' : monthLabelOf(ym)+' 입금';
-  document.getElementById('withdrawLabel').textContent = isCurrent ? '이번 달 출금' : monthLabelOf(ym)+' 출금';
+  document.getElementById('withdrawLabel').textContent = isCurrent ? '이번 달 지출' : monthLabelOf(ym)+' 지출';
 
-  let balance = 0, mDeposit = 0, mWithdraw = 0;
-  transactions.forEach(t=>{
-    const amt = Number(t.amount)||0;
-    if(t.type==='deposit') balance += amt; else balance -= amt;
-    if((t.date||'').slice(0,7) === ym){
-      if(t.type==='deposit') mDeposit += amt; else mWithdraw += amt;
-    }
-  });
-  document.getElementById('balanceValue').textContent = fmt(balance);
-  document.getElementById('monthDeposit').textContent = '+' + fmt(mDeposit);
-  document.getElementById('monthWithdraw').textContent = '-' + fmt(mWithdraw);
+  let mWithdraw = 0;
+  transactions.forEach(t=>{ if((t.date||'').slice(0,7) === ym) mWithdraw += (Number(t.amount)||0); });
+  document.getElementById('monthWithdraw').textContent = fmt(mWithdraw);
+
+  const pendingList = transactions.filter(t=>!t.settled).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const pendingTotal = pendingList.reduce((s,t)=>s+(Number(t.amount)||0),0);
+  document.getElementById('pendingValue').textContent = fmt(pendingTotal);
+  const pendingBox = document.getElementById('pendingBox');
+  if(pendingList.length===0){
+    pendingBox.className = 'pending-box ok';
+    pendingBox.innerHTML = '<div style="text-align:center;font-size:.85rem;">🎉 모두 정산됐어요</div>';
+  } else {
+    pendingBox.className = 'pending-box';
+    pendingBox.innerHTML = pendingList.map(t=>`
+      <div class="pending-row">
+        <div class="pinfo"><div class="ptitle">${escapeHtml(t.title||'')}</div><div class="pmeta">${t.date}${t.category?' · '+escapeHtml(t.category):''}</div></div>
+        <span class="pamt mono">${fmt(t.amount)}</span>
+        <button class="settle-btn" onclick="toggleSettled(${t.id}, true)">정산완료</button>
+      </div>`).join('');
+  }
 
   const totalBudget = effectiveBudget(ym);
   if(salary.amount > 0){
@@ -532,45 +606,41 @@ function render(){
     document.getElementById('budgetText').textContent = '급여 미설정';
   }
 
-  // 배정 요약
   const allocated = totalAllocated(null);
   const remainAlloc = (Number(salary.amount)||0) - allocated;
   document.getElementById('allocSummaryMain').textContent = salary.amount>0
     ? `월급 ${fmt(salary.amount)} 중 배정 ${fmt(allocated)} · 남음 ${fmt(remainAlloc)}`
     : '급여를 설정하면 카테고리별 예산 배정 한도를 알 수 있어요.';
 
-  // 카테고리별 현황 (일반 카테고리 + 적금)
-  const combined = [
-    ...categories.map(c=>({category:c.category, budget:Number(c.budget)||0, isSaving:false})),
-    ...savingsList.map(s=>({category:s.name, budget:Number(s.monthlyAmount)||0, isSaving:true}))
-  ];
+  // 카테고리별 현황
   const catListEl = document.getElementById('catList');
-  if(combined.length === 0){
+  if(categories.length === 0){
     catListEl.innerHTML = '<div class="cat-empty empty">카테고리를 등록하면 여기에 표시돼요.</div>';
   } else {
-    catListEl.innerHTML = combined.map(c=>{
+    catListEl.innerHTML = categories.map(c=>{
       const spent = categorySpend(c.category, ym);
-      const effBudget = c.isSaving ? c.budget : categoryEffectiveBudget(c.category, c.budget, ym);
-      const pct = effBudget>0 ? Math.min(100,(spent/effBudget)*100) : (spent>0?100:0);
-      const over = effBudget>0 && spent>effBudget;
+      const effB = categoryEffectiveBudget(c.category, Number(c.budget)||0, ym);
+      const pct = effB>0 ? Math.min(100,(spent/effB)*100) : (spent>0?100:0);
+      const over = effB>0 && spent>effB;
+      const arrowBadge = c.rolloverTo ? `<span class="badge b-arrow">→ ${escapeHtml(c.rolloverTo)}</span>` : '';
       return `
-        <div class="cat-card ${c.isSaving?'is-saving':''}" onclick="filterByTag('${encodeURIComponent(c.category)}')">
+        <div class="cat-card" onclick="filterByTag('${encodeURIComponent(c.category)}')">
           <div class="cat-card-top">
-            <span class="name">${escapeHtml(c.category)}${c.isSaving?'<span class="badge">적금</span>':''}</span>
-            <span class="nums"><b>${fmt(spent)}</b> / ${effBudget>0?fmt(effBudget):'예산없음'}</span>
+            <span class="name">${escapeHtml(c.category)}${arrowBadge}</span>
+            <span class="nums"><b>${fmt(spent)}</b> / ${effB>0?fmt(effB):'예산없음'}</span>
           </div>
           <div class="cat-bar"><div class="cat-bar-fill ${over?'over':''}" style="width:${pct}%"></div></div>
         </div>`;
     }).join('');
   }
 
-  // 적금 현황 (회차/만기)
+  // 적금 현황
   const savListEl = document.getElementById('savList');
   if(savingsList.length === 0){
     savListEl.innerHTML = '<div class="cat-empty empty">적금을 등록하면 여기에 표시돼요.</div>';
   } else {
     savListEl.innerHTML = savingsList.map(s=>{
-      const paidTx = transactions.filter(t=>t.type==='withdraw' && t.category===s.name);
+      const paidTx = transactions.filter(t=>t.category===s.name);
       const paidAmt = paidTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
       const round = paidTx.length;
       const totalRounds = Math.max(1, monthsBetween(s.startDate, s.endDate));
@@ -587,11 +657,29 @@ function render(){
     }).join('');
   }
 
-  // 지출 그래프 (선택 월 카테고리별 지출 비중)
+  // 구독 현황
+  const subListEl = document.getElementById('subList');
+  if(subscriptions.length === 0){
+    subListEl.innerHTML = '<div class="cat-empty empty">구독을 등록하면 여기에 표시돼요.</div>';
+  } else {
+    subListEl.innerHTML = subscriptions.map(s=>{
+      const paidTx = transactions.filter(t=>t.category===s.name);
+      const paidAmt = paidTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
+      const round = paidTx.length;
+      return `
+        <div class="sub-card ${s.active?'':'cancelled'}" onclick="filterByTag('${encodeURIComponent(s.name)}')">
+          <div class="sav-top sub-top"><span class="name">${escapeHtml(s.name)}${s.active?'':' (해지됨)'}</span><span class="round">${round}회 결제</span></div>
+          <div class="sav-meta">매달 ${s.day}일 · 월 ${fmt(s.amount)} ${s.active?'':'· 해지일 '+s.cancelDate}</div>
+          <div class="sav-amt">누적 ${fmt(paidAmt)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // 지출 그래프
   const chartBox = document.getElementById('chartBox');
   const spendMap = {};
   transactions.forEach(t=>{
-    if(t.type==='withdraw' && (t.date||'').slice(0,7)===ym){
+    if((t.date||'').slice(0,7)===ym){
       const key = t.category || '미분류';
       spendMap[key] = (spendMap[key]||0) + (Number(t.amount)||0);
     }
@@ -609,9 +697,10 @@ function render(){
       </div>`).join('');
   }
 
-  // 카테고리 선택 옵션 (드롭다운)
+  // 카테고리 선택 옵션
   const allCats = new Set(categories.map(c=>c.category));
   savingsList.forEach(s=>allCats.add(s.name));
+  subscriptions.forEach(s=>allCats.add(s.name));
   transactions.forEach(t=>{ if(t.category) allCats.add(t.category); });
   const sel = document.getElementById('fCategorySelect');
   const prevVal = sel.value;
@@ -622,23 +711,21 @@ function render(){
 
   // 태그 필터 배너
   const banner = document.getElementById('tagBanner');
-  const tabsBar = document.getElementById('tabsBar');
   if(tagFilter){
-    const tagAmt = transactions.filter(t=>t.category===tagFilter && t.type==='withdraw').reduce((s,t)=>s+(Number(t.amount)||0),0);
+    const tagAmt = transactions.filter(t=>t.category===tagFilter).reduce((s,t)=>s+(Number(t.amount)||0),0);
     const tagCnt = transactions.filter(t=>t.category===tagFilter).length;
     banner.style.display = 'flex';
     document.getElementById('tagBannerText').textContent = `🏷 "${tagFilter}" · 총 ${tagCnt}건 · 지출 합계 ${fmt(tagAmt)}`;
-    tabsBar.style.display = 'none';
   } else {
     banner.style.display = 'none';
-    tabsBar.style.display = 'flex';
   }
+
+  const unsettledOnly = document.getElementById('unsettledOnlyToggle').checked;
 
   // 내역 목록
   const filtered = transactions
-    .filter(t => tagFilter
-      ? t.category===tagFilter
-      : ((t.date||'').slice(0,7)===ym) && (currentFilter==='all' ? true : t.type===currentFilter))
+    .filter(t => tagFilter ? t.category===tagFilter : ((t.date||'').slice(0,7)===ym))
+    .filter(t => !unsettledOnly || !t.settled)
     .sort((a,b)=> (b.date||'').localeCompare(a.date||'') || (b.id-a.id));
 
   const list = document.getElementById('list');
@@ -647,14 +734,15 @@ function render(){
     return;
   }
   list.innerHTML = filtered.map(t=>`
-    <div class="item">
-      <div class="tagbar ${t.type==='deposit'?'d':'w'}"></div>
+    <div class="item ${!t.settled?'unsettled':''}">
+      <div class="tagbar"></div>
       <div class="info">
         <div class="title">${escapeHtml(t.title||'(제목없음)')}</div>
         <div class="meta">${t.date}${t.memo? ' · '+escapeHtml(t.memo):''}</div>
         ${t.category?`<span class="catchip" onclick="filterByTag('${encodeURIComponent(t.category)}')">${escapeHtml(t.category)}</span>`:''}
+        <span class="settlechip ${t.settled?'on':'off'}" onclick="toggleSettled(${t.id}, ${!t.settled})">${t.settled?'정산됨':'미정산'}</span>
       </div>
-      <div class="amt ${t.type==='deposit'?'v-deposit':'v-withdraw'} mono">${t.type==='deposit'?'+':'-'}${fmt(t.amount)}</div>
+      <div class="amt mono">${fmt(t.amount)}</div>
       <button class="del" onclick="deleteEntry(${t.id})">✕</button>
     </div>
   `).join('');
@@ -664,11 +752,6 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-function setFilter(f){
-  currentFilter = f;
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.filter===f));
-  render();
-}
 function filterByTag(encodedName){
   tagFilter = decodeURIComponent(encodedName);
   render();
@@ -676,10 +759,17 @@ function filterByTag(encodedName){
 }
 function clearTagFilter(){ tagFilter = null; render(); }
 
+async function toggleSettled(id, newVal){
+  if(id < 0){ showToast('새로고침 후 다시 시도해주세요'); return; }
+  await post({action:'setSettled', id, settled:newVal});
+  const tx = transactions.find(t=>t.id===id);
+  if(tx) tx.settled = newVal;
+  render();
+  showToast(newVal ? '정산 완료 처리했어요' : '미정산으로 변경했어요');
+}
+
 function openSheet(){
   if(!checkSetup()) return;
-  const defaultType = currentFilter==='withdraw' ? 'withdraw' : 'deposit';
-  selectType(defaultType);
   document.getElementById('sheetOverlay').classList.add('open');
 }
 function closeSheet(){
@@ -690,12 +780,8 @@ function closeSheet(){
   document.getElementById('fCategorySelect').value='';
   document.getElementById('fCategoryCustom').value='';
   document.getElementById('fCategoryCustom').style.display='none';
+  document.getElementById('fSettled').checked=false;
   document.getElementById('fDate').value = todayStr();
-}
-function selectType(t){
-  currentType = t;
-  document.getElementById('btnDeposit').classList.toggle('sel', t==='deposit');
-  document.getElementById('btnWithdraw').classList.toggle('sel', t==='withdraw');
 }
 function onCategorySelectChange(){
   const v = document.getElementById('fCategorySelect').value;
@@ -709,10 +795,10 @@ async function submitEntry(){
   const title = document.getElementById('fTitle').value.trim();
   const amount = Number(document.getElementById('fAmount').value);
   const memo = document.getElementById('fMemo').value.trim();
+  const settled = document.getElementById('fSettled').checked;
   if(!title || !amount || amount<=0){ showToast('항목과 금액을 입력해주세요'); return; }
-  const payload = { action:'add', date, type:currentType, category, title, amount, memo };
   try{
-    await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+    await post({ action:'add', date, category, title, amount, memo, settled });
     showToast('저장했어요');
     closeSheet();
     loadData();
@@ -722,7 +808,7 @@ async function submitEntry(){
 async function deleteEntry(id){
   if(!confirm('이 내역을 삭제할까요?')) return;
   try{
-    await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'delete', id}) });
+    await post({action:'delete', id});
     showToast('삭제했어요');
     loadData();
   }catch(err){ showToast('삭제 실패'); }
@@ -739,12 +825,18 @@ function closeCatManage(){
   document.getElementById('newCatName').value='';
   document.getElementById('newCatBudget').value='';
 }
+function categoryOptionsHtml(excludeCat, selected){
+  return '<option value="">없음 (본인에게 이월)</option>' + categories
+    .filter(c=>c.category!==excludeCat)
+    .map(c=>`<option value="${escapeHtml(c.category)}" ${c.category===selected?'selected':''}>${escapeHtml(c.category)}</option>`).join('');
+}
 function renderCatManage(){
   const allocated = totalAllocated(null);
   const remain = (Number(salary.amount)||0) - allocated;
   document.getElementById('allocSummary').innerHTML = salary.amount>0
-    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> (적금 포함) · 남음 <b>${fmt(remain)}</b>`
+    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> (적금·구독 포함) · 남음 <b>${fmt(remain)}</b>`
     : '먼저 상단 "급여 설정"에서 월급을 등록하면 배정 한도를 계산해드려요.';
+  document.getElementById('newCatRolloverTo').innerHTML = categoryOptionsHtml(null, '');
   const el = document.getElementById('catManageList');
   if(categories.length===0){
     el.innerHTML = '<div class="empty" style="padding:16px;">등록된 카테고리가 없어요.</div>';
@@ -752,46 +844,51 @@ function renderCatManage(){
   }
   el.innerHTML = categories.map(c=>`
     <div class="cat-manage-row">
-      <input value="${escapeHtml(c.category)}" disabled>
-      <input class="mono amt-in" type="number" inputmode="numeric" value="${c.budget||0}" onchange="updateCategoryBudget('${encodeURIComponent(c.category)}', this.value)">
-      <button onclick="removeCategory('${encodeURIComponent(c.category)}')">✕</button>
+      <div class="r1">
+        <input value="${escapeHtml(c.category)}" disabled>
+        <input class="mono amt-in" type="number" inputmode="numeric" value="${c.budget||0}" onchange="updateCategoryField('${encodeURIComponent(c.category)}','budget',this.value)">
+        <button onclick="removeCategory('${encodeURIComponent(c.category)}')">✕</button>
+      </div>
+      <select onchange="updateCategoryField('${encodeURIComponent(c.category)}','rolloverTo',this.value)">
+        ${categoryOptionsHtml(c.category, c.rolloverTo||'')}
+      </select>
     </div>
   `).join('');
 }
 async function addCategory(){
   const name = document.getElementById('newCatName').value.trim();
   const budget = Number(document.getElementById('newCatBudget').value) || 0;
+  const rolloverTo = document.getElementById('newCatRolloverTo').value || '';
   if(!name){ showToast('카테고리명을 입력해주세요'); return; }
   if(salary.amount>0){
     const remain = (Number(salary.amount)||0) - totalAllocated(null);
     if(budget > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); return; }
   }
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setCategoryBudget', category:name, budget}) });
+  await post({action:'setCategoryBudget', category:name, budget, rolloverTo});
   document.getElementById('newCatName').value='';
   document.getElementById('newCatBudget').value='';
   await loadData();
   renderCatManage();
   showToast('카테고리를 추가했어요');
 }
-async function updateCategoryBudget(encodedName, value){
+async function updateCategoryField(encodedName, field, value){
   const category = decodeURIComponent(encodedName);
-  const budget = Number(value) || 0;
-  if(salary.amount>0){
+  const existing = categories.find(c=>c.category===category);
+  if(!existing) return;
+  const budget = field==='budget' ? (Number(value)||0) : (Number(existing.budget)||0);
+  const rolloverTo = field==='rolloverTo' ? value : (existing.rolloverTo||'');
+  if(field==='budget' && salary.amount>0){
     const remain = (Number(salary.amount)||0) - totalAllocated(category);
-    if(budget > remain){
-      showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`);
-      renderCatManage();
-      return;
-    }
+    if(budget > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); renderCatManage(); return; }
   }
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setCategoryBudget', category, budget}) });
+  await post({action:'setCategoryBudget', category, budget, rolloverTo});
   await loadData();
-  showToast('예산을 수정했어요');
+  showToast('카테고리 정보를 수정했어요');
 }
 async function removeCategory(encodedName){
   const category = decodeURIComponent(encodedName);
   if(!confirm(`'${category}' 카테고리를 삭제할까요? (기존 내역은 유지돼요)`)) return;
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'deleteCategory', category}) });
+  await post({action:'deleteCategory', category});
   await loadData();
   renderCatManage();
   showToast('카테고리를 삭제했어요');
@@ -814,21 +911,17 @@ function renderSavManage(){
   const allocated = totalAllocated(null);
   const remain = (Number(salary.amount)||0) - allocated;
   document.getElementById('allocSummarySav').innerHTML = salary.amount>0
-    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> (카테고리 포함) · 남음 <b>${fmt(remain)}</b>`
-    : '먼저 "급여 설정"에서 월급을 등록하면 배정 한도를 계산해드려요.';
+    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> · 남음 <b>${fmt(remain)}</b>` : '먼저 "급여 설정"에서 월급을 등록해주세요.';
   const el = document.getElementById('savManageList');
-  if(savingsList.length===0){
-    el.innerHTML = '<div class="empty" style="padding:16px;">등록된 적금이 없어요.</div>';
-    return;
-  }
+  if(savingsList.length===0){ el.innerHTML = '<div class="empty" style="padding:16px;">등록된 적금이 없어요.</div>'; return; }
   el.innerHTML = savingsList.map(s=>`
     <div class="sav-manage-row">
-      <div class="row1"><strong>${escapeHtml(s.name)}</strong><button onclick="removeSavings('${encodeURIComponent(s.name)}')">✕ 삭제</button></div>
+      <div class="row1"><strong>${escapeHtml(s.name)}</strong><button class="del-btn" onclick="removeSavings('${encodeURIComponent(s.name)}')">✕ 삭제</button></div>
       <div class="grid">
         <div><label>월 납입액</label><input class="mono" type="number" value="${s.monthlyAmount}" onchange="updateSavings('${encodeURIComponent(s.name)}','monthlyAmount',this.value)"></div>
         <div><label>만기일</label><input type="date" value="${s.endDate}" onchange="updateSavings('${encodeURIComponent(s.name)}','endDate',this.value)"></div>
       </div>
-      <div style="font-size:.7rem;color:var(--ink-soft);margin-top:6px;">시작일: ${s.startDate} (수정 불가 · 이미 생성된 회차 유지)</div>
+      <div style="font-size:.7rem;color:var(--ink-soft);margin-top:6px;">시작일: ${s.startDate} (수정 불가)</div>
     </div>
   `).join('');
 }
@@ -842,12 +935,10 @@ async function addSavings(){
     const remain = (Number(salary.amount)||0) - totalAllocated(null);
     if(monthlyAmount > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); return; }
   }
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSavings', name, monthlyAmount, startDate, endDate}) });
+  await post({action:'setSavings', name, monthlyAmount, startDate, endDate});
   await loadData();
   renderSavManage();
-  document.getElementById('newSavName').value='';
-  document.getElementById('newSavAmount').value='';
-  document.getElementById('newSavEnd').value='';
+  document.getElementById('newSavName').value=''; document.getElementById('newSavAmount').value=''; document.getElementById('newSavEnd').value='';
   showToast('적금을 추가했어요');
 }
 async function updateSavings(encodedName, field, value){
@@ -856,42 +947,121 @@ async function updateSavings(encodedName, field, value){
   if(!existing) return;
   if(field==='monthlyAmount' && salary.amount>0){
     const remain = (Number(salary.amount)||0) - totalAllocated(name);
-    if(Number(value) > remain){
-      showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`);
-      renderSavManage();
-      return;
-    }
+    if(Number(value) > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); renderSavManage(); return; }
   }
   const payload = { action:'setSavings', name, monthlyAmount:existing.monthlyAmount, startDate:existing.startDate, endDate:existing.endDate };
   payload[field] = field==='monthlyAmount' ? Number(value) : value;
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) });
+  await post(payload);
   await loadData();
   showToast('적금 정보를 수정했어요');
 }
 async function removeSavings(encodedName){
   const name = decodeURIComponent(encodedName);
   if(!confirm(`'${name}' 적금을 삭제할까요? (기존 내역은 유지돼요)`)) return;
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'deleteSavings', name}) });
+  await post({action:'deleteSavings', name});
   await loadData();
   renderSavManage();
   showToast('적금을 삭제했어요');
 }
 
+// 구독 관리
+function openSubManage(){
+  if(!checkSetup()) return;
+  renderSubManage();
+  document.getElementById('newSubStart').value = todayStr();
+  document.getElementById('subOverlay').classList.add('open');
+}
+function closeSubManage(){
+  document.getElementById('subOverlay').classList.remove('open');
+  document.getElementById('newSubName').value=''; document.getElementById('newSubAmount').value=''; document.getElementById('newSubDay').value='';
+}
+function renderSubManage(){
+  const allocated = totalAllocated(null);
+  const remain = (Number(salary.amount)||0) - allocated;
+  document.getElementById('allocSummarySub').innerHTML = salary.amount>0
+    ? `월급 <b>${fmt(salary.amount)}</b> 중 배정 <b>${fmt(allocated)}</b> · 남음 <b>${fmt(remain)}</b>` : '먼저 "급여 설정"에서 월급을 등록해주세요.';
+  const el = document.getElementById('subManageList');
+  if(subscriptions.length===0){ el.innerHTML = '<div class="empty" style="padding:16px;">등록된 구독이 없어요.</div>'; return; }
+  el.innerHTML = subscriptions.map(s=>`
+    <div class="sav-manage-row">
+      <div class="row1">
+        <strong>${escapeHtml(s.name)}</strong>
+        <div class="rowbtns">
+          <button class="toggle-btn ${s.active?'active':'inactive'}" onclick="toggleSubscriptionActive('${encodeURIComponent(s.name)}', ${!s.active})">${s.active?'활성':'해지됨'}</button>
+          <button class="del-btn" onclick="removeSubscription('${encodeURIComponent(s.name)}')">✕</button>
+        </div>
+      </div>
+      <div class="grid">
+        <div><label>월 결제액</label><input class="mono" type="number" value="${s.amount}" onchange="updateSubscription('${encodeURIComponent(s.name)}','amount',this.value)"></div>
+        <div><label>결제일</label><input type="number" min="1" max="31" value="${s.day}" onchange="updateSubscription('${encodeURIComponent(s.name)}','day',this.value)"></div>
+      </div>
+      <div style="font-size:.7rem;color:var(--ink-soft);margin-top:6px;">시작일: ${s.startDate}${s.active?'':' · 해지일: '+s.cancelDate}</div>
+    </div>
+  `).join('');
+}
+async function addSubscription(){
+  const name = document.getElementById('newSubName').value.trim();
+  const amount = Number(document.getElementById('newSubAmount').value) || 0;
+  const day = Math.min(31, Math.max(1, Number(document.getElementById('newSubDay').value) || 1));
+  const startDate = document.getElementById('newSubStart').value || todayStr();
+  if(!name || !amount){ showToast('이름과 결제액을 입력해주세요'); return; }
+  if(salary.amount>0){
+    const remain = (Number(salary.amount)||0) - totalAllocated(null);
+    if(amount > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); return; }
+  }
+  await post({action:'setSubscription', name, amount, day, startDate, active:true, cancelDate:''});
+  await loadData();
+  renderSubManage();
+  document.getElementById('newSubName').value=''; document.getElementById('newSubAmount').value=''; document.getElementById('newSubDay').value='';
+  showToast('구독을 추가했어요');
+}
+async function updateSubscription(encodedName, field, value){
+  const name = decodeURIComponent(encodedName);
+  const existing = subscriptions.find(s=>s.name===name);
+  if(!existing) return;
+  if(field==='amount' && salary.amount>0){
+    const remain = (Number(salary.amount)||0) - totalAllocated(name);
+    if(Number(value) > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); renderSubManage(); return; }
+  }
+  const payload = { action:'setSubscription', name, amount:existing.amount, day:existing.day, startDate:existing.startDate, active:existing.active, cancelDate:existing.cancelDate||'' };
+  payload[field] = (field==='amount'||field==='day') ? Number(value) : value;
+  await post(payload);
+  await loadData();
+  showToast('구독 정보를 수정했어요');
+}
+async function toggleSubscriptionActive(encodedName, newActive){
+  const name = decodeURIComponent(encodedName);
+  const existing = subscriptions.find(s=>s.name===name);
+  if(!existing) return;
+  const payload = { action:'setSubscription', name, amount:existing.amount, day:existing.day, startDate:existing.startDate,
+    active:newActive, cancelDate: newActive ? '' : todayStr() };
+  await post(payload);
+  await loadData();
+  renderSubManage();
+  showToast(newActive ? '구독을 다시 활성화했어요' : '구독을 해지 처리했어요');
+}
+async function removeSubscription(encodedName){
+  const name = decodeURIComponent(encodedName);
+  if(!confirm(`'${name}' 구독을 완전히 삭제할까요? (기존 내역은 유지돼요)`)) return;
+  await post({action:'deleteSubscription', name});
+  await loadData();
+  renderSubManage();
+  showToast('구독을 삭제했어요');
+}
+
 // 급여 관리
 function openSalaryManage(){
   if(!checkSetup()) return;
-  document.getElementById('salPayDay').value = salary.payDay || 25;
   document.getElementById('salAmount').value = salary.amount || '';
   document.getElementById('salRolloverStart').value = salary.rolloverStart || '';
   document.getElementById('salOverlay').classList.add('open');
 }
 function closeSalaryManage(){ document.getElementById('salOverlay').classList.remove('open'); }
 async function saveSalary(){
-  const payDay = Math.min(31, Math.max(1, Number(document.getElementById('salPayDay').value) || 25));
   const amount = Number(document.getElementById('salAmount').value) || 0;
   const rolloverStart = document.getElementById('salRolloverStart').value || '';
-  await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({action:'setSalary', payDay, amount, rolloverStart}) });
-  salary = { payDay, amount, rolloverStart };
+  await post({action:'setSalary', amount, rolloverStart});
+  salary = { amount, rolloverStart };
   closeSalaryManage();
   loadData();
   showToast('급여 정보를 저장했어요');
