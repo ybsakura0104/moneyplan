@@ -3,169 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1F3A5F">
+<meta name="theme-color" content="#162A42">
 <title>용돈 통장</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F7F3EA; --paper-2:#EFE9D8; --ink:#23262B; --ink-soft:#5B5A52; --rule:#D8D0BC;
-    --deposit:#2F6F4E; --deposit-bg:#E4EEE6; --withdraw:#B4432D; --withdraw-bg:#F5E5DF;
-    --accent:#1F3A5F; --accent-2:#2B4E7A; --savings:#8A6D2F; --savings-bg:#F1E9D4;
-    --sub:#6B4E9E; --sub-bg:#EDE6F5;
-    --pending:#C97A1A; --pending-bg:#FBECD8;
+    --paper:#F4F0E6; --paper-deep:#E9E2CD; --rule:#D6CCAE; --rule-strong:#B9AD87;
+    --ink:#1C2026; --ink-soft:#6B6558;
+    --accent:#162A42; --accent-2:#23456B;
+    --spend:#A6372B; --spend-bg:#F4E1DB;
+    --positive:#1C7A4E; --positive-bg:#E0F0E6;
+    --pending:#B5700A; --pending-bg:#F8E8CB;
+    --savings:#8A5A12; --savings-bg:#F3E6CC;
+    --sub:#5B3C96; --sub-bg:#EAE2F7;
     font-size:16px;
   }
   *{box-sizing:border-box;}
-  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; -webkit-font-smoothing:antialiased; padding-bottom:96px; }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif; -webkit-font-smoothing:antialiased; padding-bottom:100px; }
   .brand{ font-family:'Noto Serif KR',serif; }
-  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:-0.02em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:-0.01em; font-variant-numeric:tabular-nums; }
 
-  header.app-header{ background:var(--accent); color:var(--paper); padding:22px 20px 20px; position:relative; overflow:hidden; display:flex;justify-content:space-between;align-items:flex-start; }
-  header.app-header::after{ content:""; position:absolute; inset:0; background-image:radial-gradient(circle at 6px 0, transparent 5px, var(--accent) 5.5px); background-size:16px 16px; background-position:-8px -8px; opacity:.12; pointer-events:none; }
-  header.app-header h1{ font-family:'Noto Serif KR',serif; font-size:1.5rem; margin:0 0 2px; font-weight:700; position:relative; }
-  header.app-header p{ margin:0; font-size:.8rem; opacity:.7; position:relative; }
-  .gear-btn{ position:relative;z-index:2;background:rgba(247,243,234,.15);border:none;color:var(--paper);width:36px;height:36px;border-radius:50%;font-size:1.05rem;cursor:pointer; }
+  /* ---------- Header : ledger-book cover ---------- */
+  header.app-header{
+    background:var(--accent); color:var(--paper); padding:24px 20px 22px;
+    display:flex; justify-content:space-between; align-items:flex-start;
+    border-bottom:3px dashed rgba(244,240,230,.3);
+  }
+  header.app-header h1{ font-family:'Noto Serif KR',serif; font-size:1.4rem; margin:0 0 3px; font-weight:700; letter-spacing:.01em; }
+  header.app-header p{ margin:0; font-size:.78rem; opacity:.65; }
+  .gear-btn{ background:rgba(244,240,230,.14); border:1px solid rgba(244,240,230,.25); color:var(--paper); width:38px;height:38px;border-radius:10px; font-size:1.05rem; cursor:pointer; flex-shrink:0; }
 
-  .passbook{ margin:16px; background:#fff; border-radius:14px; box-shadow:0 1px 3px rgba(35,38,43,.08), 0 8px 20px -12px rgba(35,38,43,.25); display:flex; overflow:hidden; border:1px solid var(--rule); }
-  .passbook-stub{ width:22px; background:var(--paper-2); border-right:1px dashed var(--rule); display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; padding:14px 0; }
-  .passbook-stub span{ width:7px;height:7px;border-radius:50%; background:var(--paper); border:1px solid var(--rule); }
-  .passbook-body{ flex:1; padding:18px 18px 16px; }
-  .passbook-row{ display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; }
-  .passbook-row + .passbook-row{ border-top:1px solid var(--paper-2); }
-  .passbook-row .label{ font-size:.8rem; color:var(--ink-soft); }
-  .passbook-row .value{ font-size:1.05rem; font-weight:600; }
-  .passbook-row.total .value{ font-size:1.65rem; font-weight:700; color:var(--pending); }
-  .passbook-row.total .label{ font-size:.85rem; }
-  .v-deposit{ color:var(--deposit); } .v-withdraw{ color:var(--withdraw); }
+  /* ---------- Hero passbook card ---------- */
+  .passbook{ margin:16px; background:#FFFDF8; border-radius:4px; box-shadow:0 1px 0 var(--rule-strong), 0 10px 24px -16px rgba(28,32,38,.35); border:1px solid var(--rule); overflow:hidden; }
+  .passbook-head{ display:flex; justify-content:space-between; align-items:baseline; padding:16px 18px 0; }
+  .passbook-head .k{ font-size:.74rem; color:var(--ink-soft); letter-spacing:.02em; }
+  .passbook-head .settle-ok{ font-size:.72rem; color:var(--positive); font-weight:600; }
+  .passbook-head .settle-warn{ font-size:.72rem; color:var(--pending); font-weight:700; }
+  .pending-hero{ padding:4px 18px 14px; }
+  .pending-hero .value{ font-size:2.6rem; font-weight:700; line-height:1.08; }
+  .pending-hero .value.zero{ color:var(--positive); }
+  .pending-hero .value.has{ color:var(--pending); }
+  .passbook-div{ height:1px; background:repeating-linear-gradient(90deg, var(--rule) 0 6px, transparent 6px 10px); margin:0 18px; }
+  .passbook-row{ display:flex; justify-content:space-between; align-items:baseline; padding:12px 18px; }
+  .passbook-row .label{ font-size:.82rem; color:var(--ink-soft); }
+  .passbook-row .value{ font-size:1.15rem; font-weight:700; color:var(--spend); }
+  .budget-wrap{ padding:0 18px 16px; }
+  .budget-bar{ height:7px; border-radius:4px; background:var(--paper-deep); overflow:hidden; }
+  .budget-bar-fill{ height:100%; background:var(--accent-2); border-radius:4px; transition:width .3s; }
+  .budget-line{ display:flex; justify-content:space-between; align-items:center; font-size:.74rem; color:var(--ink-soft); margin-top:7px; }
+  .link-btn{ background:none;border:none;color:var(--accent-2);font-size:.78rem;font-weight:700;cursor:pointer;padding:0; }
 
-  .budget-bar{ margin-top:12px; height:8px; border-radius:5px; background:var(--paper-2); overflow:hidden; }
-  .budget-bar-fill{ height:100%; background:var(--accent-2); border-radius:5px; transition:width .3s; }
-  .budget-line{ display:flex; justify-content:space-between; align-items:center; font-size:.72rem; color:var(--ink-soft); margin-top:6px; }
+  /* ---------- Section heads : ledger double-rule ---------- */
+  .section-head{ display:flex; justify-content:space-between; align-items:baseline; margin:30px 16px 2px; padding-bottom:7px; border-bottom:2px solid var(--ink); }
+  .section-head h3{ font-family:'Noto Serif KR',serif; font-size:.96rem; margin:0; font-weight:600; }
+  .section-sub{ margin:8px 16px 10px; font-size:.74rem; color:var(--ink-soft); }
 
-  .section-head{ display:flex; justify-content:space-between; align-items:center; margin:20px 16px 4px; }
-  .section-head h3{ font-family:'Noto Serif KR',serif; font-size:.98rem; margin:0; }
-  .section-sub{ margin:0 16px 8px; font-size:.72rem; color:var(--ink-soft); }
-  .link-btn{ background:none;border:none;color:var(--accent-2);font-size:.78rem;font-weight:600;cursor:pointer;padding:0; }
-
-  .pending-box{ margin:0 16px 4px; background:var(--pending-bg); border:1px solid var(--pending); border-radius:12px; padding:12px 14px; }
-  .pending-box.ok{ background:var(--deposit-bg); border-color:var(--deposit); }
-  .pending-row{ display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px dashed rgba(0,0,0,.08); font-size:.85rem; }
+  /* ---------- Pending settlement box ---------- */
+  .pending-box{ margin:0 16px 4px; background:var(--pending-bg); border:1px solid var(--pending); border-radius:10px; padding:4px 14px; }
+  .pending-box.ok{ background:var(--positive-bg); border-color:var(--positive); padding:14px; text-align:center; font-size:.85rem; color:var(--positive); font-weight:600; }
+  .pending-row{ display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed rgba(28,32,38,.12); font-size:.85rem; }
   .pending-row:last-child{ border-bottom:none; }
   .pending-row .pinfo{ flex:1; min-width:0; }
   .pending-row .ptitle{ font-weight:600; }
-  .pending-row .pmeta{ font-size:.7rem; color:var(--ink-soft); }
-  .pending-row .pamt{ font-family:'IBM Plex Mono',monospace; font-weight:700; margin-right:8px; white-space:nowrap; }
-  .settle-btn{ background:var(--pending); color:#fff; border:none; border-radius:8px; padding:6px 10px; font-size:.72rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .pending-row .pmeta{ font-size:.7rem; color:var(--ink-soft); margin-top:1px; }
+  .pending-row .pamt{ font-weight:700; margin-right:10px; white-space:nowrap; color:var(--spend); }
+  .settle-btn{ background:var(--pending); color:#fff; border:none; border-radius:7px; padding:7px 11px; font-size:.72rem; font-weight:700; cursor:pointer; white-space:nowrap; }
 
-  .cat-list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
-  .cat-card{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:11px 14px; cursor:pointer; }
-  .cat-card.is-saving{ border-left:4px solid var(--savings); }
-  .cat-card.is-sub{ border-left:4px solid var(--sub); }
-  .cat-card-top{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:6px; }
-  .cat-card-top .name{ font-weight:700; }
-  .cat-card-top .name .badge{ font-size:.65rem; padding:1px 6px; border-radius:20px; margin-left:5px; font-weight:700; }
-  .badge.b-saving{ background:var(--savings-bg); color:var(--savings); }
-  .badge.b-sub{ background:var(--sub-bg); color:var(--sub); }
-  .badge.b-arrow{ background:var(--paper-2); color:var(--ink-soft); }
+  /* ---------- Category / savings / subscription cards ---------- */
+  .cat-list{ margin:0 16px; display:flex; flex-direction:column; gap:9px; }
+  .cat-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--cat-c, var(--rule-strong)); border-radius:8px; padding:12px 14px; cursor:pointer; }
+  .cat-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; position:relative; top:-1px; }
+  .cat-card-top{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:7px; }
+  .cat-card-top .name{ font-weight:700; display:flex; align-items:center; }
+  .cat-card-top .name .badge{ font-size:.64rem; padding:1px 7px; border-radius:20px; margin-left:6px; font-weight:700; }
+  .badge.b-arrow{ background:var(--paper-deep); color:var(--ink-soft); }
   .cat-card-top .nums{ font-size:.78rem; color:var(--ink-soft); }
-  .cat-card-top .nums b{ color:var(--ink); font-family:'IBM Plex Mono',monospace; }
-  .cat-bar{ height:6px; border-radius:4px; background:var(--paper-2); overflow:hidden; }
-  .cat-bar-fill{ height:100%; border-radius:4px; background:var(--accent-2); }
-  .cat-bar-fill.over{ background:var(--withdraw); }
+  .cat-card-top .nums b{ color:var(--ink); font-weight:700; }
+  .cat-bar{ height:6px; border-radius:4px; background:var(--paper-deep); overflow:hidden; }
+  .cat-bar-fill{ height:100%; border-radius:4px; }
+  .cat-bar-fill.over{ background:var(--spend)!important; }
   .cat-empty{ padding:8px; }
 
-  .sav-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:12px; padding:11px 14px; cursor:pointer; }
-  .sub-card{ background:#fff; border:1px solid var(--rule); border-left:4px solid var(--sub); border-radius:12px; padding:11px 14px; cursor:pointer; }
+  .sav-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:8px; padding:12px 14px; cursor:pointer; }
+  .sub-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--sub); border-radius:8px; padding:12px 14px; cursor:pointer; }
   .sav-card.cancelled, .sub-card.cancelled{ opacity:.5; }
-  .sav-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px; }
+  .sav-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
   .sav-top .name{ font-weight:700; font-size:.9rem; }
-  .sav-top .round{ font-size:.75rem; background:var(--savings-bg); color:var(--savings); padding:2px 8px; border-radius:20px; font-weight:700; }
-  .sub-top .round{ font-size:.75rem; background:var(--sub-bg); color:var(--sub); padding:2px 8px; border-radius:20px; font-weight:700; }
-  .sav-meta{ font-size:.72rem; color:var(--ink-soft); margin-bottom:6px; }
-  .sav-amt{ font-size:.95rem; font-weight:700; font-family:'IBM Plex Mono',monospace; margin-bottom:6px; }
-  .sav-amt .target{ font-size:.75rem; color:var(--ink-soft); font-weight:500; }
+  .sav-top .round{ font-size:.72rem; background:var(--savings-bg); color:var(--savings); padding:2px 9px; border-radius:20px; font-weight:700; }
+  .sub-top .round{ font-size:.72rem; background:var(--sub-bg); color:var(--sub); padding:2px 9px; border-radius:20px; font-weight:700; }
+  .sav-meta{ font-size:.72rem; color:var(--ink-soft); margin-bottom:7px; }
+  .sav-amt{ font-size:1rem; font-weight:700; margin-bottom:7px; }
+  .sav-amt .target{ font-size:.74rem; color:var(--ink-soft); font-weight:500; }
 
-  .chart-box{ margin:0 16px; background:#fff; border:1px solid var(--rule); border-radius:12px; padding:14px; }
-  .chart-row{ display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+  /* ---------- Chart ---------- */
+  .chart-box{ margin:0 16px; background:#FFFDF8; border:1px solid var(--rule); border-radius:8px; padding:16px 14px; }
+  .chart-row{ display:flex; align-items:center; gap:9px; margin-bottom:11px; }
   .chart-row:last-child{ margin-bottom:0; }
-  .chart-row .clabel{ width:64px; flex-shrink:0; font-size:.72rem; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .chart-row .ctrack{ flex:1; height:16px; background:var(--paper-2); border-radius:4px; overflow:hidden; }
-  .chart-row .cfill{ height:100%; background:linear-gradient(90deg,var(--accent-2),var(--accent)); border-radius:4px; }
-  .chart-row .camt{ width:74px; flex-shrink:0; text-align:right; font-size:.72rem; font-family:'IBM Plex Mono',monospace; }
+  .chart-row .clabel{ width:68px; flex-shrink:0; font-size:.72rem; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .chart-row .ctrack{ flex:1; height:14px; background:var(--paper-deep); border-radius:3px; overflow:hidden; }
+  .chart-row .cfill{ height:100%; border-radius:3px; }
+  .chart-row .camt{ width:76px; flex-shrink:0; text-align:right; font-size:.72rem; font-weight:600; }
 
-  .month-nav{ display:flex; align-items:center; justify-content:center; gap:16px; margin:18px 16px 10px; }
-  .month-nav button{ background:var(--paper-2); border:none; width:34px;height:34px;border-radius:50%; font-size:1rem; color:var(--ink); cursor:pointer; }
-  .month-nav button:disabled{ opacity:.35; cursor:default; }
-  .month-nav .m-label{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:1rem; min-width:110px; text-align:center; }
+  /* ---------- Month nav ---------- */
+  .month-nav{ display:flex; align-items:center; justify-content:center; gap:18px; margin:26px 16px 12px; }
+  .month-nav button{ background:var(--paper-deep); border:1px solid var(--rule); width:36px;height:36px;border-radius:50%; font-size:1rem; color:var(--ink); cursor:pointer; }
+  .month-nav button:disabled{ opacity:.3; cursor:default; }
+  .month-nav .m-label{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:1.05rem; min-width:112px; text-align:center; }
 
-  .filter-row{ display:flex; align-items:center; gap:6px; margin:0 16px 12px; font-size:.8rem; color:var(--ink-soft); }
+  .filter-row{ display:flex; align-items:center; gap:7px; margin:0 16px 12px; font-size:.8rem; color:var(--ink-soft); }
   .filter-row input{ width:auto; }
 
-  .list{ margin:0 16px; display:flex; flex-direction:column; gap:8px; }
-  .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); font-size:.85rem; background:#fff; border:1px dashed var(--rule); border-radius:12px; }
-  .item{ background:#fff; border:1px solid var(--rule); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
-  .item.unsettled{ border-color:var(--pending); background:var(--pending-bg); }
-  .item .tagbar{ width:8px; align-self:stretch; border-radius:4px; flex-shrink:0; background:var(--withdraw); }
-  .item .info{ flex:1; min-width:0; }
-  .item .title{ font-weight:600; font-size:.95rem; }
-  .item .meta{ font-size:.72rem; color:var(--ink-soft); margin-top:2px; }
-  .item .catchip{ display:inline-block; background:var(--paper-2); color:var(--ink-soft); font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; margin-right:4px; cursor:pointer; }
-  .item .settlechip{ display:inline-block; font-size:.68rem; padding:1px 7px; border-radius:20px; margin-top:4px; cursor:pointer; font-weight:700; }
-  .settlechip.on{ background:var(--deposit-bg); color:var(--deposit); }
+  /* ---------- Ledger rows (transaction list) ---------- */
+  .list{ margin:0 16px; background:#FFFDF8; border:1px solid var(--rule); border-radius:8px; overflow:hidden; }
+  .empty{ text-align:center; padding:40px 20px; color:var(--ink-soft); font-size:.85rem; background:#FFFDF8; border:1px dashed var(--rule); border-radius:8px; margin:0 16px; }
+  .ledger-row{ display:flex; align-items:flex-start; gap:11px; padding:13px 14px; border-bottom:1px solid var(--paper-deep); }
+  .ledger-row:last-child{ border-bottom:none; }
+  .ledger-row.unsettled{ background:var(--pending-bg); }
+  .ledger-dot{ width:9px; height:9px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+  .ledger-row .info{ flex:1; min-width:0; }
+  .ledger-row .title{ font-weight:600; font-size:.93rem; }
+  .ledger-row .meta{ font-size:.71rem; color:var(--ink-soft); margin-top:2px; }
+  .chiprow{ margin-top:6px; display:flex; flex-wrap:wrap; gap:5px; }
+  .catchip{ display:inline-block; font-size:.67rem; padding:2px 8px; border-radius:20px; cursor:pointer; font-weight:600; }
+  .settlechip{ display:inline-block; font-size:.67rem; padding:2px 8px; border-radius:20px; cursor:pointer; font-weight:700; }
+  .settlechip.on{ background:var(--positive-bg); color:var(--positive); }
   .settlechip.off{ background:var(--pending); color:#fff; }
-  .item .amt{ font-size:1rem; font-weight:700; white-space:nowrap; color:var(--withdraw); }
-  .item .del{ background:none;border:none;color:var(--ink-soft);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
+  .amt-col{ text-align:right; flex-shrink:0; }
+  .amt-col .amt{ font-size:1.05rem; font-weight:700; white-space:nowrap; }
+  .amt-col .del{ display:block; margin-left:auto; margin-top:5px; background:none;border:none;color:var(--ink-soft);font-size:1rem;padding:2px 4px;cursor:pointer; }
 
-  .fab{ position:fixed; right:20px; bottom:24px; width:58px; height:58px; border-radius:50%; background:var(--accent); color:var(--paper); border:none; font-size:1.8rem; line-height:1; box-shadow:0 6px 18px rgba(31,58,95,.4); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .fab{ position:fixed; right:20px; bottom:24px; width:58px; height:58px; border-radius:16px; background:var(--accent); color:var(--paper); border:none; font-size:1.8rem; line-height:1; box-shadow:0 8px 20px rgba(22,42,66,.4); cursor:pointer; display:flex; align-items:center; justify-content:center; }
 
-  .sheet-overlay{ position:fixed; inset:0; background:rgba(35,38,43,.45); display:none; align-items:flex-end; justify-content:center; z-index:20; }
+  .sheet-overlay{ position:fixed; inset:0; background:rgba(28,32,38,.5); display:none; align-items:flex-end; justify-content:center; z-index:20; }
   .sheet-overlay.open{ display:flex; }
-  .sheet{ background:var(--paper); width:100%; max-width:480px; border-radius:18px 18px 0 0; padding:18px 20px calc(20px + env(safe-area-inset-bottom)); max-height:88vh; overflow:auto; }
-  .sheet h2{ font-family:'Noto Serif KR',serif; font-size:1.15rem; margin:2px 0 16px; display:flex; justify-content:space-between; align-items:center; }
-  label{ font-size:.78rem; color:var(--ink-soft); display:block; margin:12px 0 5px; }
-  input, textarea, select{ width:100%; border:1.5px solid var(--rule); border-radius:10px; padding:11px 12px; font-size:.95rem; background:#fff; color:var(--ink); font-family:inherit; appearance:none; -webkit-appearance:none; }
+  .sheet{ background:var(--paper); width:100%; max-width:480px; border-radius:16px 16px 0 0; padding:18px 20px calc(20px + env(safe-area-inset-bottom)); max-height:88vh; overflow:auto; }
+  .sheet h2{ font-family:'Noto Serif KR',serif; font-size:1.1rem; margin:2px 0 16px; display:flex; justify-content:space-between; align-items:center; }
+  label{ font-size:.76rem; color:var(--ink-soft); display:block; margin:14px 0 6px; font-weight:600; }
+  input, textarea, select{ width:100%; border:1.5px solid var(--rule); border-radius:9px; padding:11px 12px; font-size:.95rem; background:#fff; color:var(--ink); font-family:inherit; appearance:none; -webkit-appearance:none; }
   select{ background-image:linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%), linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%); background-position: calc(100% - 18px) center, calc(100% - 13px) center; background-size: 5px 5px, 5px 5px; background-repeat:no-repeat; }
   input.mono{ font-family:'IBM Plex Mono',monospace; }
-  .checkline{ display:flex; align-items:center; gap:8px; margin-top:14px; font-size:.88rem; }
-  .checkline input{ width:auto; }
-  .sheet-actions{ display:flex; gap:8px; margin-top:18px; }
-  .btn{ flex:1; padding:13px 0; border-radius:10px; border:none; font-weight:700; font-size:.92rem; cursor:pointer; }
+
+  /* amount field made the hero of the form */
+  .amt-input-wrap{ position:relative; }
+  .amt-input-wrap input{ font-family:'IBM Plex Mono',monospace; font-size:1.6rem; font-weight:700; text-align:right; padding:14px 42px 14px 14px; color:var(--spend); border-color:var(--rule-strong); }
+  .amt-input-wrap::after{ content:"원"; position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:.95rem; color:var(--ink-soft); font-weight:600; pointer-events:none; }
+  .amt-input-wrap input:focus{ outline:none; border-color:var(--accent-2); }
+  .quick-amt-row{ display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+  .quick-amt-row button{ flex:1; min-width:64px; width:auto; padding:8px 0; border-radius:8px; border:1px solid var(--rule); background:#fff; color:var(--ink-soft); font-size:.78rem; font-weight:600; cursor:pointer; }
+  .quick-amt-row button.clear{ color:var(--spend); border-color:var(--spend); flex:0 0 auto; padding:8px 12px; }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap:7px; }
+  .chip-opt{ width:auto; padding:7px 13px; border-radius:20px; border:1.5px solid var(--rule); background:var(--chip-bg,#fff); color:var(--chip-c,var(--ink-soft)); font-size:.82rem; font-weight:600; cursor:pointer; }
+  .chip-opt.active{ border-color:var(--chip-c,var(--accent)); box-shadow:inset 0 0 0 1px var(--chip-c,var(--accent)); }
+  .chip-opt.chip-custom{ color:var(--ink-soft); background:var(--paper-deep); }
+  .chip-opt.chip-custom.active{ border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); color:var(--accent); }
+
+  .settle-toggle{ display:flex; border:1.5px solid var(--rule); border-radius:9px; overflow:hidden; }
+  .seg-btn{ flex:1; width:auto; border:none; padding:11px 0; background:#fff; color:var(--ink-soft); font-size:.86rem; font-weight:700; cursor:pointer; }
+  .seg-btn + .seg-btn{ border-left:1.5px solid var(--rule); }
+  .seg-btn.active{ background:var(--accent); color:var(--paper); }
+  .seg-btn.active.is-settled{ background:var(--positive); }
+
+  .sheet-actions{ display:flex; gap:8px; margin-top:20px; }
+  .btn{ flex:1; padding:14px 0; border-radius:10px; border:none; font-weight:700; font-size:.92rem; cursor:pointer; }
   .btn.primary{ background:var(--accent); color:var(--paper); }
-  .btn.ghost{ background:var(--paper-2); color:var(--ink-soft); }
+  .btn.ghost{ background:var(--paper-deep); color:var(--ink-soft); }
   .btn.small{ flex:none; padding:8px 14px; font-size:.8rem; }
   .close-x{ background:none;border:none;font-size:1.2rem;color:var(--ink-soft);cursor:pointer; }
 
-  .cat-manage-row{ border:1px solid var(--rule); border-radius:10px; padding:10px; margin-bottom:8px; }
+  .cat-manage-row{ border:1px solid var(--rule); border-radius:9px; padding:10px; margin-bottom:8px; }
   .cat-manage-row .r1{ display:flex; gap:8px; align-items:center; margin-bottom:6px; }
   .cat-manage-row .r1 input{ flex:1; }
   .cat-manage-row .r1 input.amt-in{ max-width:110px; }
-  .cat-manage-row .r1 button{ background:none;border:none;color:var(--withdraw);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
+  .cat-manage-row .r1 button{ background:none;border:none;color:var(--spend);font-size:1.1rem;padding:4px 6px;cursor:pointer; }
   .cat-manage-add{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule); }
-  .alloc-summary{ font-size:.78rem; color:var(--ink-soft); background:var(--paper-2); border-radius:8px; padding:8px 10px; margin-bottom:10px; }
+  .alloc-summary{ font-size:.78rem; color:var(--ink-soft); background:var(--paper-deep); border-radius:8px; padding:9px 11px; margin-bottom:10px; }
   .alloc-summary b{ color:var(--ink); }
 
-  .sav-manage-row{ border:1px solid var(--rule); border-radius:10px; padding:10px; margin-bottom:10px; }
+  .sav-manage-row{ border:1px solid var(--rule); border-radius:9px; padding:10px; margin-bottom:10px; }
   .sav-manage-row .row1{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
   .sav-manage-row .row1 strong{ font-size:.88rem; }
   .sav-manage-row .row1 .rowbtns{ display:flex; gap:6px; }
   .sav-manage-row .row1 button{ background:none;border:none;font-size:.85rem;cursor:pointer; }
-  .sav-manage-row .del-btn{ color:var(--withdraw); }
+  .sav-manage-row .del-btn{ color:var(--spend); }
   .toggle-btn{ border-radius:20px; padding:4px 10px; font-weight:700; border:none; }
-  .toggle-btn.active{ background:var(--deposit-bg); color:var(--deposit); }
-  .toggle-btn.inactive{ background:var(--paper-2); color:var(--ink-soft); }
+  .toggle-btn.active{ background:var(--positive-bg); color:var(--positive); }
+  .toggle-btn.inactive{ background:var(--paper-deep); color:var(--ink-soft); }
   .sav-manage-row .grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .sav-manage-row label{ margin:6px 0 3px; }
 
-  .tag-banner{ display:none;margin:0 16px 10px;background:var(--accent);color:var(--paper);border-radius:10px;padding:10px 14px;font-size:.82rem;align-items:center;justify-content:space-between; }
-  .tag-banner button{ background:rgba(247,243,234,.2);border:none;color:var(--paper);border-radius:6px;padding:4px 10px;font-size:.75rem;cursor:pointer; }
+  .tag-banner{ display:none;margin:0 16px 10px;background:var(--accent);color:var(--paper);border-radius:9px;padding:11px 14px;font-size:.82rem;align-items:center;justify-content:space-between; }
+  .tag-banner button{ width:auto;background:rgba(244,240,230,.2);border:none;color:var(--paper);border-radius:6px;padding:5px 11px;font-size:.75rem;cursor:pointer; }
 
   .toast{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:30px; font-size:.82rem; opacity:0; pointer-events:none; transition:opacity .25s; z-index:30; }
   .toast.show{ opacity:1; }
 
-  .setup{ margin:16px; background:#fff; border:1px solid var(--rule); border-radius:12px; padding:16px; font-size:.82rem; color:var(--ink-soft); line-height:1.6; }
+  .setup{ margin:16px; background:#FFFDF8; border:1px solid var(--rule); border-radius:10px; padding:16px; font-size:.82rem; color:var(--ink-soft); line-height:1.6; }
   .setup input{ margin-top:8px; }
   .setup .btn{ margin-top:10px; }
 </style>
@@ -187,16 +223,17 @@
 </div>
 
 <div class="passbook">
-  <div class="passbook-stub"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-  <div class="passbook-body">
-    <div class="passbook-row total">
-      <span class="label">정산 대기 금액</span>
-      <span class="value mono" id="pendingValue">0원</span>
-    </div>
-    <div class="passbook-row">
-      <span class="label" id="withdrawLabel">이번 달 지출</span>
-      <span class="value mono v-withdraw" id="monthWithdraw">0원</span>
-    </div>
+  <div class="passbook-head">
+    <span class="k">정산 대기 금액</span>
+    <span id="settleTag" class="settle-ok">모두 정산됨</span>
+  </div>
+  <div class="pending-hero"><span class="value mono zero" id="pendingValue">0원</span></div>
+  <div class="passbook-div"></div>
+  <div class="passbook-row">
+    <span class="label" id="withdrawLabel">이번 달 지출</span>
+    <span class="value mono" id="monthWithdraw">0원</span>
+  </div>
+  <div class="budget-wrap">
     <div class="budget-bar"><div class="budget-bar-fill" id="budgetFill" style="width:0%"></div></div>
     <div class="budget-line">
       <span id="budgetText">급여 미설정</span>
@@ -228,7 +265,7 @@
 <div class="cat-list" id="subList"><div class="cat-empty empty">구독을 등록하면 여기에 표시돼요.</div></div>
 
 <div class="section-head"><h3>지출 그래프</h3></div>
-<div class="chart-box" id="chartBox"><div class="empty" style="border:none;padding:12px;">이번 달 지출 내역이 쌓이면 그래프가 표시돼요.</div></div>
+<div class="chart-box" id="chartBox"><div class="empty" style="border:none;padding:12px;margin:0;">이번 달 지출 내역이 쌓이면 그래프가 표시돼요.</div></div>
 
 <div class="month-nav">
   <button id="prevMonthBtn" onclick="changeMonth(-1)">◀</button>
@@ -243,10 +280,10 @@
 
 <div class="filter-row" id="filterRow">
   <input type="checkbox" id="unsettledOnlyToggle" onchange="render()">
-  <label for="unsettledOnlyToggle">미정산 내역만 보기</label>
+  <label for="unsettledOnlyToggle" style="margin:0;">미정산 내역만 보기</label>
 </div>
 
-<div class="list" id="list"><div class="empty">불러오는 중...</div></div>
+<div id="list"><div class="empty">불러오는 중...</div></div>
 
 <button class="fab" onclick="openSheet()">+</button>
 
@@ -254,21 +291,37 @@
 <div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this)closeSheet()">
   <div class="sheet">
     <h2>지출 내역 추가 <button class="close-x" onclick="closeSheet()">✕</button></h2>
+
+    <label>금액</label>
+    <div class="amt-input-wrap">
+      <input id="fAmount" type="text" inputmode="numeric" placeholder="0" oninput="formatAmountInput(this)">
+    </div>
+    <div class="quick-amt-row">
+      <button type="button" onclick="bumpAmount(1000)">+1,000</button>
+      <button type="button" onclick="bumpAmount(5000)">+5,000</button>
+      <button type="button" onclick="bumpAmount(10000)">+10,000</button>
+      <button type="button" onclick="bumpAmount(50000)">+50,000</button>
+      <button type="button" class="clear" onclick="document.getElementById('fAmount').value=''">지우기</button>
+    </div>
+
+    <label>카테고리</label>
+    <div class="chip-row" id="fCategoryChips"></div>
+    <input id="fCategoryCustom" type="text" placeholder="새 카테고리 이름 입력" style="display:none;margin-top:8px;">
+    <select id="fCategorySelect" onchange="onCategorySelectChange()" style="display:none;"></select>
+
     <label>날짜</label>
     <input id="fDate" type="date">
-    <label>카테고리</label>
-    <select id="fCategorySelect" onchange="onCategorySelectChange()"></select>
-    <input id="fCategoryCustom" type="text" placeholder="새 카테고리 이름 입력" style="display:none;margin-top:8px;">
     <label>항목</label>
     <input id="fTitle" type="text" placeholder="예: 편의점, 지하철, 넷플릭스">
-    <label>금액</label>
-    <input id="fAmount" class="mono" type="number" inputmode="numeric" placeholder="0">
     <label>메모 (선택)</label>
     <textarea id="fMemo" rows="2" placeholder="메모"></textarea>
-    <div class="checkline">
-      <input id="fSettled" type="checkbox">
-      <label for="fSettled" style="margin:0;">계좌 이체까지 이미 정산했어요</label>
+
+    <label>정산 상태</label>
+    <div class="settle-toggle">
+      <button type="button" id="fSettledOffBtn" class="seg-btn active" onclick="setSettledChoice(false)">정산 전</button>
+      <button type="button" id="fSettledOnBtn" class="seg-btn" onclick="setSettledChoice(true)">정산 완료</button>
     </div>
+
     <div class="sheet-actions">
       <button class="btn ghost" onclick="closeSheet()">취소</button>
       <button class="btn primary" onclick="submitEntry()">저장</button>
@@ -362,6 +415,7 @@ let subscriptions = [];
 let salary = { amount: 0, rolloverStart: '' };
 let tagFilter = null;
 let selectedMonth = new Date().toISOString().slice(0,7);
+let fSettledChoice = false;
 
 const fmt = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const todayStr = () => new Date().toISOString().slice(0,10);
@@ -369,6 +423,15 @@ const currentMonthKey = () => new Date().toISOString().slice(0,7);
 
 document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric',weekday:'long'});
 document.getElementById('fDate').value = todayStr();
+
+// ---------- 카테고리별 색상 (해시 기반, 매번 같은 카테고리는 같은 색) ----------
+function catHue(str){
+  let hash = 0;
+  for(let i=0;i<str.length;i++){ hash = str.charCodeAt(i) + ((hash<<5)-hash); }
+  return Math.abs(hash) % 360;
+}
+function hashColor(str){ return `hsl(${catHue(str)} 46% 32%)`; }
+function hashColorBg(str){ return `hsl(${catHue(str)} 55% 92%)`; }
 
 function showToast(msg){
   const t = document.getElementById('toast');
@@ -580,12 +643,17 @@ function render(){
 
   const pendingList = transactions.filter(t=>!t.settled).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
   const pendingTotal = pendingList.reduce((s,t)=>s+(Number(t.amount)||0),0);
-  document.getElementById('pendingValue').textContent = fmt(pendingTotal);
+  const pendingValueEl = document.getElementById('pendingValue');
+  pendingValueEl.textContent = fmt(pendingTotal);
+  pendingValueEl.className = 'value mono ' + (pendingList.length===0 ? 'zero' : 'has');
+  const settleTag = document.getElementById('settleTag');
   const pendingBox = document.getElementById('pendingBox');
   if(pendingList.length===0){
+    settleTag.textContent = '모두 정산됨'; settleTag.className = 'settle-ok';
     pendingBox.className = 'pending-box ok';
-    pendingBox.innerHTML = '<div style="text-align:center;font-size:.85rem;">🎉 모두 정산됐어요</div>';
+    pendingBox.innerHTML = '🎉 모두 정산됐어요';
   } else {
+    settleTag.textContent = pendingList.length + '건 대기'; settleTag.className = 'settle-warn';
     pendingBox.className = 'pending-box';
     pendingBox.innerHTML = pendingList.map(t=>`
       <div class="pending-row">
@@ -599,7 +667,7 @@ function render(){
   if(salary.amount > 0){
     const pct = Math.min(100, (mWithdraw/Math.max(totalBudget,1))*100);
     document.getElementById('budgetFill').style.width = pct + '%';
-    document.getElementById('budgetFill').style.background = pct >= 100 ? 'var(--withdraw)' : 'var(--accent-2)';
+    document.getElementById('budgetFill').style.background = pct >= 100 ? 'var(--spend)' : 'var(--accent-2)';
     document.getElementById('budgetText').textContent = `${monthLabelOf(ym)} 예산 ${fmt(totalBudget)} 중 ${fmt(totalBudget-mWithdraw)} 남음`;
   } else {
     document.getElementById('budgetFill').style.width = '0%';
@@ -623,13 +691,14 @@ function render(){
       const pct = effB>0 ? Math.min(100,(spent/effB)*100) : (spent>0?100:0);
       const over = effB>0 && spent>effB;
       const arrowBadge = c.rolloverTo ? `<span class="badge b-arrow">→ ${escapeHtml(c.rolloverTo)}</span>` : '';
+      const cColor = hashColor(c.category);
       return `
-        <div class="cat-card" onclick="filterByTag('${encodeURIComponent(c.category)}')">
+        <div class="cat-card" style="--cat-c:${cColor}" onclick="filterByTag('${encodeURIComponent(c.category)}')">
           <div class="cat-card-top">
-            <span class="name">${escapeHtml(c.category)}${arrowBadge}</span>
+            <span class="name"><span class="cat-dot" style="background:${cColor}"></span>${escapeHtml(c.category)}${arrowBadge}</span>
             <span class="nums"><b>${fmt(spent)}</b> / ${effB>0?fmt(effB):'예산없음'}</span>
           </div>
-          <div class="cat-bar"><div class="cat-bar-fill ${over?'over':''}" style="width:${pct}%"></div></div>
+          <div class="cat-bar"><div class="cat-bar-fill ${over?'over':''}" style="width:${pct}%;background:${cColor};"></div></div>
         </div>`;
     }).join('');
   }
@@ -686,28 +755,30 @@ function render(){
   });
   const entries = Object.entries(spendMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
   if(entries.length===0){
-    chartBox.innerHTML = '<div class="empty" style="border:none;padding:12px;">이 달의 지출 내역이 없어요.</div>';
+    chartBox.innerHTML = '<div class="empty" style="border:none;padding:12px;margin:0;">이 달의 지출 내역이 없어요.</div>';
   } else {
     const max = entries[0][1];
     chartBox.innerHTML = entries.map(([cat,amt])=>`
       <div class="chart-row">
         <div class="clabel">${escapeHtml(cat)}</div>
-        <div class="ctrack"><div class="cfill" style="width:${Math.max(4,(amt/max)*100)}%"></div></div>
+        <div class="ctrack"><div class="cfill" style="width:${Math.max(4,(amt/max)*100)}%;background:${hashColor(cat)};"></div></div>
         <div class="camt">${fmt(amt)}</div>
       </div>`).join('');
   }
 
-  // 카테고리 선택 옵션
+  // 카테고리 선택 옵션 (히든 select + 칩)
   const allCats = new Set(categories.map(c=>c.category));
   savingsList.forEach(s=>allCats.add(s.name));
   subscriptions.forEach(s=>allCats.add(s.name));
   transactions.forEach(t=>{ if(t.category) allCats.add(t.category); });
+  const sortedCats = Array.from(allCats).sort();
   const sel = document.getElementById('fCategorySelect');
   const prevVal = sel.value;
   sel.innerHTML = '<option value="">선택 안 함</option>' +
-    Array.from(allCats).sort().map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('') +
+    sortedCats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('') +
     '<option value="__custom__">+ 직접 입력</option>';
-  if(Array.from(allCats).includes(prevVal)) sel.value = prevVal;
+  if(sortedCats.includes(prevVal) || prevVal==='__custom__') sel.value = prevVal;
+  renderCategoryChipsFrom(sortedCats);
 
   // 태그 필터 배너
   const banner = document.getElementById('tagBanner');
@@ -733,19 +804,27 @@ function render(){
     list.innerHTML = '<div class="empty">해당 조건의 내역이 없어요.<br>오른쪽 아래 + 버튼으로 추가해보세요.</div>';
     return;
   }
-  list.innerHTML = filtered.map(t=>`
-    <div class="item ${!t.settled?'unsettled':''}">
-      <div class="tagbar"></div>
+  list.className = '';
+  list.innerHTML = filtered.map(t=>{
+    const dotColor = t.category ? hashColor(t.category) : 'var(--ink-soft)';
+    const amtColor = t.amount<0 ? 'var(--positive)' : 'var(--spend)';
+    return `
+    <div class="ledger-row ${!t.settled?'unsettled':''}">
+      <span class="ledger-dot" style="background:${dotColor}"></span>
       <div class="info">
         <div class="title">${escapeHtml(t.title||'(제목없음)')}</div>
         <div class="meta">${t.date}${t.memo? ' · '+escapeHtml(t.memo):''}</div>
-        ${t.category?`<span class="catchip" onclick="filterByTag('${encodeURIComponent(t.category)}')">${escapeHtml(t.category)}</span>`:''}
-        <span class="settlechip ${t.settled?'on':'off'}" onclick="toggleSettled(${t.id}, ${!t.settled})">${t.settled?'정산됨':'미정산'}</span>
+        <div class="chiprow">
+          ${t.category?`<span class="catchip" style="color:${dotColor};background:${hashColorBg(t.category)}" onclick="filterByTag('${encodeURIComponent(t.category)}')">${escapeHtml(t.category)}</span>`:''}
+          <span class="settlechip ${t.settled?'on':'off'}" onclick="toggleSettled(${t.id}, ${!t.settled})">${t.settled?'정산됨':'미정산'}</span>
+        </div>
       </div>
-      <div class="amt mono">${fmt(t.amount)}</div>
-      <button class="del" onclick="deleteEntry(${t.id})">✕</button>
-    </div>
-  `).join('');
+      <div class="amt-col">
+        <div class="amt mono" style="color:${amtColor}">${fmt(t.amount)}</div>
+        <button class="del" onclick="deleteEntry(${t.id})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function escapeHtml(s){
@@ -768,6 +847,44 @@ async function toggleSettled(id, newVal){
   showToast(newVal ? '정산 완료 처리했어요' : '미정산으로 변경했어요');
 }
 
+// ---------- 금액 입력 / 카테고리 칩 ----------
+function formatAmountInput(el){
+  const digits = el.value.replace(/[^0-9]/g,'');
+  el.value = digits ? Number(digits).toLocaleString('ko-KR') : '';
+}
+function bumpAmount(n){
+  const el = document.getElementById('fAmount');
+  const cur = Number((el.value||'0').replace(/[^0-9]/g,'')) || 0;
+  el.value = (cur+n).toLocaleString('ko-KR');
+}
+function currentCategoryList(){
+  return Array.from(document.getElementById('fCategorySelect').options)
+    .map(o=>o.value).filter(v=>v && v!=='__custom__');
+}
+function renderCategoryChipsFrom(list){
+  const container = document.getElementById('fCategoryChips');
+  if(!container) return;
+  const current = document.getElementById('fCategorySelect').value;
+  container.innerHTML = list.map(c=>{
+    const active = c===current ? 'active' : '';
+    return `<button type="button" class="chip-opt ${active}" style="--chip-c:${hashColor(c)};--chip-bg:${hashColorBg(c)}" onclick="chooseCategoryChip('${encodeURIComponent(c)}')">${escapeHtml(c)}</button>`;
+  }).join('') + `<button type="button" class="chip-opt chip-custom ${current==='__custom__'?'active':''}" onclick="chooseCategoryChip('__custom__')">+ 직접입력</button>`;
+}
+function chooseCategoryChip(encoded){
+  const val = encoded==='__custom__' ? '__custom__' : decodeURIComponent(encoded);
+  const sel = document.getElementById('fCategorySelect');
+  sel.value = val;
+  onCategorySelectChange();
+  renderCategoryChipsFrom(currentCategoryList());
+}
+function setSettledChoice(v){
+  fSettledChoice = v;
+  const onBtn = document.getElementById('fSettledOnBtn');
+  const offBtn = document.getElementById('fSettledOffBtn');
+  onBtn.classList.toggle('active', v); onBtn.classList.toggle('is-settled', v);
+  offBtn.classList.toggle('active', !v);
+}
+
 function openSheet(){
   if(!checkSetup()) return;
   document.getElementById('sheetOverlay').classList.add('open');
@@ -780,8 +897,9 @@ function closeSheet(){
   document.getElementById('fCategorySelect').value='';
   document.getElementById('fCategoryCustom').value='';
   document.getElementById('fCategoryCustom').style.display='none';
-  document.getElementById('fSettled').checked=false;
   document.getElementById('fDate').value = todayStr();
+  setSettledChoice(false);
+  renderCategoryChipsFrom(currentCategoryList());
 }
 function onCategorySelectChange(){
   const v = document.getElementById('fCategorySelect').value;
@@ -793,10 +911,10 @@ async function submitEntry(){
   const selVal = document.getElementById('fCategorySelect').value;
   const category = selVal==='__custom__' ? document.getElementById('fCategoryCustom').value.trim() : selVal;
   const title = document.getElementById('fTitle').value.trim();
-  const amount = Number(document.getElementById('fAmount').value);
+  const amount = Number((document.getElementById('fAmount').value||'').replace(/[^0-9-]/g,''));
   const memo = document.getElementById('fMemo').value.trim();
-  const settled = document.getElementById('fSettled').checked;
-  if(!title || !amount || amount<=0){ showToast('항목과 금액을 입력해주세요'); return; }
+  const settled = fSettledChoice;
+  if(!title || !amount){ showToast('항목과 금액을 입력해주세요'); return; }
   try{
     await post({ action:'add', date, category, title, amount, memo, settled });
     showToast('저장했어요');
