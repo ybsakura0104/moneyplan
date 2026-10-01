@@ -479,8 +479,8 @@ async function reconcileAuto(){
         const useDay = Math.min(day, lastDayOfMonth(cursor));
         const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
         if(new Date(dateStr) <= todayDate){
-          await post({action:'add', date:dateStr, category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성', settled:false});
-          transactions.push({id:-1, date:dateStr, category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성', settled:false});
+          await post({action:'add', date:dateStr, category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성', settled:true});
+          transactions.push({id:-1, date:dateStr, category:s.name, title:s.name+' 적금 납입', amount:s.monthlyAmount, memo:'자동 생성', settled:true});
           created = true;
         }
       }
@@ -500,8 +500,8 @@ async function reconcileAuto(){
         const useDay = Math.min(Number(sub.day)||1, lastDayOfMonth(cursor));
         const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
         if(new Date(dateStr) <= todayDate && dateStr <= effEnd){
-          await post({action:'add', date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:false});
-          transactions.push({id:-1, date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:false});
+          await post({action:'add', date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:true});
+          transactions.push({id:-1, date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:true});
           created = true;
         }
       }
