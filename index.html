@@ -598,6 +598,9 @@ function categorySpend(cat, ym){
 function isSavingsName(cat){
   return savingsList.some(s=>s.name===cat);
 }
+function isExcludedFromSpend(cat){
+  return isSavingsName(cat) || cat === '엄마 용돈';
+}
 function matchesTag(t, tag){
   return t.category===tag || t.title===(tag+' 구독료');
 }
@@ -653,7 +656,7 @@ function render(){
   document.getElementById('withdrawLabel').textContent = isCurrent ? '이번 달 지출' : monthLabelOf(ym)+' 지출';
 
   let mWithdraw = 0;
-  transactions.forEach(t=>{ if((t.date||'').slice(0,7) === ym && !isSavingsName(t.category)) mWithdraw += (Number(t.amount)||0); });
+  transactions.forEach(t=>{ if((t.date||'').slice(0,7) === ym && !isExcludedFromSpend(t.category)) mWithdraw += (Number(t.amount)||0); });
   document.getElementById('monthWithdraw').textContent = fmt(mWithdraw);
 
   const pendingList = transactions.filter(t=>!t.settled).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
@@ -764,7 +767,7 @@ function render(){
   const chartBox = document.getElementById('chartBox');
   const spendMap = {};
   transactions.forEach(t=>{
-    if((t.date||'').slice(0,7)===ym && !isSavingsName(t.category)){
+    if((t.date||'').slice(0,7)===ym && !isExcludedFromSpend(t.category)){
       const key = t.category || '미분류';
       spendMap[key] = (spendMap[key]||0) + (Number(t.amount)||0);
     }
