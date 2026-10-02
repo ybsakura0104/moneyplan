@@ -72,40 +72,45 @@
   .pending-row .pamt{ font-weight:700; margin-right:10px; white-space:nowrap; color:var(--spend); }
   .settle-btn{ background:var(--pending); color:#fff; border:none; border-radius:7px; padding:7px 11px; font-size:.72rem; font-weight:700; cursor:pointer; white-space:nowrap; }
 
-  /* ---------- Category / savings / subscription cards ---------- */
-  .cat-list{ margin:0 16px; display:flex; flex-direction:column; gap:9px; }
-  .cat-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--cat-c, var(--rule-strong)); border-radius:8px; padding:12px 14px; cursor:pointer; }
-  .cat-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; position:relative; top:-1px; }
-  .cat-card-top{ display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:7px; }
-  .cat-card-top .name{ font-weight:700; display:flex; align-items:center; }
-  .cat-card-top .name .badge{ font-size:.64rem; padding:1px 7px; border-radius:20px; margin-left:6px; font-weight:700; }
+  /* ---------- Category / savings / subscription cards (2열) ---------- */
+  .cat-list{ margin:0 16px; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .cat-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--cat-c, var(--rule-strong)); border-radius:8px; padding:10px 11px; cursor:pointer; min-width:0; }
+  .cat-dot{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; flex-shrink:0; }
+  .cat-card-top{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; font-size:.85rem; margin-bottom:7px; }
+  .cat-card-top .name{ font-weight:700; font-size:.82rem; display:flex; align-items:center; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .badge{ font-size:.6rem; padding:1px 6px; border-radius:20px; margin-left:5px; font-weight:700; flex-shrink:0; }
   .badge.b-arrow{ background:var(--paper-deep); color:var(--ink-soft); }
-  .cat-card-top .nums{ font-size:.78rem; color:var(--ink-soft); }
+  .cat-card-top .nums{ font-size:.72rem; color:var(--ink-soft); }
   .cat-card-top .nums b{ color:var(--ink); font-weight:700; }
-  .cat-bar{ height:6px; border-radius:4px; background:var(--paper-deep); overflow:hidden; }
+  .cat-bar{ height:5px; border-radius:4px; background:var(--paper-deep); overflow:hidden; }
   .cat-bar-fill{ height:100%; border-radius:4px; }
   .cat-bar-fill.over{ background:var(--spend)!important; }
-  .cat-empty{ padding:8px; }
+  .cat-empty{ padding:8px; grid-column:1 / -1; }
 
-  .sav-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:8px; padding:12px 14px; cursor:pointer; }
-  .sub-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--sub); border-radius:8px; padding:12px 14px; cursor:pointer; }
+  .sav-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--savings); border-radius:8px; padding:10px 11px; cursor:pointer; min-width:0; }
+  .sub-card{ background:#FFFDF8; border:1px solid var(--rule); border-left:4px solid var(--sub); border-radius:8px; padding:10px 11px; cursor:pointer; min-width:0; }
   .sav-card.cancelled, .sub-card.cancelled{ opacity:.5; }
-  .sav-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
-  .sav-top .name{ font-weight:700; font-size:.9rem; }
-  .sav-top .round{ font-size:.72rem; background:var(--savings-bg); color:var(--savings); padding:2px 9px; border-radius:20px; font-weight:700; }
-  .sub-top .round{ font-size:.72rem; background:var(--sub-bg); color:var(--sub); padding:2px 9px; border-radius:20px; font-weight:700; }
-  .sav-meta{ font-size:.72rem; color:var(--ink-soft); margin-bottom:7px; }
-  .sav-amt{ font-size:1rem; font-weight:700; margin-bottom:7px; }
-  .sav-amt .target{ font-size:.74rem; color:var(--ink-soft); font-weight:500; }
+  .sav-top{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom:5px; }
+  .sav-top .name{ font-weight:700; font-size:.82rem; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sav-top .round{ font-size:.66rem; background:var(--savings-bg); color:var(--savings); padding:2px 8px; border-radius:20px; font-weight:700; }
+  .sub-top .round{ font-size:.66rem; background:var(--sub-bg); color:var(--sub); padding:2px 8px; border-radius:20px; font-weight:700; }
+  .sav-meta{ font-size:.67rem; color:var(--ink-soft); margin-bottom:6px; line-height:1.4; }
+  .sav-amt{ font-size:.86rem; font-weight:700; margin-bottom:6px; }
+  .sav-amt .target{ font-size:.67rem; color:var(--ink-soft); font-weight:500; display:block; }
 
-  /* ---------- Chart ---------- */
+  /* ---------- Chart (원형) ---------- */
   .chart-box{ margin:0 16px; background:#FFFDF8; border:1px solid var(--rule); border-radius:8px; padding:16px 14px; }
-  .chart-row{ display:flex; align-items:center; gap:9px; margin-bottom:11px; }
-  .chart-row:last-child{ margin-bottom:0; }
-  .chart-row .clabel{ width:68px; flex-shrink:0; font-size:.72rem; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .chart-row .ctrack{ flex:1; height:14px; background:var(--paper-deep); border-radius:3px; overflow:hidden; }
-  .chart-row .cfill{ height:100%; border-radius:3px; }
-  .chart-row .camt{ width:76px; flex-shrink:0; text-align:right; font-size:.72rem; font-weight:600; }
+  .donut-wrap{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .donut{ width:132px; height:132px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .donut-hole{ width:78px; height:78px; border-radius:50%; background:#FFFDF8; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .donut-total{ font-weight:700; font-size:.78rem; }
+  .donut-total-label{ font-size:.62rem; color:var(--ink-soft); margin-top:1px; }
+  .donut-legend{ flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+  .donut-legend-row{ display:flex; align-items:center; gap:7px; font-size:.76rem; }
+  .legend-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .legend-name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); font-weight:600; }
+  .legend-pct{ font-weight:700; width:36px; text-align:right; flex-shrink:0; }
+  .legend-amt{ font-size:.7rem; color:var(--ink-soft); width:76px; text-align:right; flex-shrink:0; }
 
   /* ---------- Month nav ---------- */
   .month-nav{ display:flex; align-items:center; justify-content:center; gap:18px; margin:26px 16px 12px; }
@@ -382,6 +387,8 @@
         <div style="flex:1;"><label>결제일 (매달 며칠)</label><input id="newSubDay" type="number" min="1" max="31" placeholder="15"></div>
         <div style="flex:1;"><label>시작일</label><input id="newSubStart" type="date"></div>
       </div>
+      <label>카테고리</label>
+      <select id="newSubCategory"><option value="">미분류</option></select>
       <button class="btn primary" style="margin-top:12px;" onclick="addSubscription()">구독 추가</button>
     </div>
   </div>
@@ -556,15 +563,17 @@ async function reconcileAuto(){
     const effEnd = sub.active ? todayStr() : (sub.cancelDate || todayStr());
     const effEndYm = effEnd.slice(0,7);
     const lastYm = effEndYm < todayYm ? effEndYm : todayYm;
+    const subTitle = sub.name + ' 구독료';
+    const subCategory = sub.category || '';
     let cursor = startYm;
     while(cursor <= lastYm){
-      const exists = transactions.some(t=>t.category===sub.name && (t.date||'').slice(0,7)===cursor);
+      const exists = transactions.some(t=>t.title===subTitle && (t.date||'').slice(0,7)===cursor);
       if(!exists){
         const useDay = Math.min(Number(sub.day)||1, lastDayOfMonth(cursor));
         const dateStr = `${cursor}-${String(useDay).padStart(2,'0')}`;
         if(new Date(dateStr) <= todayDate && dateStr <= effEnd){
-          await post({action:'add', date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:true});
-          transactions.push({id:-1, date:dateStr, category:sub.name, title:sub.name+' 구독료', amount:sub.amount, memo:'자동 생성', settled:true});
+          await post({action:'add', date:dateStr, category:subCategory, title:subTitle, amount:sub.amount, memo:'자동 생성', settled:true});
+          transactions.push({id:-1, date:dateStr, category:subCategory, title:subTitle, amount:sub.amount, memo:'자동 생성', settled:true});
           created = true;
         }
       }
@@ -585,6 +594,12 @@ function spendInMonth(ym){
 }
 function categorySpend(cat, ym){
   return transactions.filter(t=>t.category===cat && (t.date||'').slice(0,7)===ym).reduce((s,t)=>s+(Number(t.amount)||0),0);
+}
+function isSavingsName(cat){
+  return savingsList.some(s=>s.name===cat);
+}
+function matchesTag(t, tag){
+  return t.category===tag || t.title===(tag+' 구독료');
 }
 function categoryTransferIn(targetCat, ym){
   return categories.filter(c=>c.rolloverTo===targetCat)
@@ -638,7 +653,7 @@ function render(){
   document.getElementById('withdrawLabel').textContent = isCurrent ? '이번 달 지출' : monthLabelOf(ym)+' 지출';
 
   let mWithdraw = 0;
-  transactions.forEach(t=>{ if((t.date||'').slice(0,7) === ym) mWithdraw += (Number(t.amount)||0); });
+  transactions.forEach(t=>{ if((t.date||'').slice(0,7) === ym && !isSavingsName(t.category)) mWithdraw += (Number(t.amount)||0); });
   document.getElementById('monthWithdraw').textContent = fmt(mWithdraw);
 
   const pendingList = transactions.filter(t=>!t.settled).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
@@ -732,38 +747,52 @@ function render(){
     subListEl.innerHTML = '<div class="cat-empty empty">구독을 등록하면 여기에 표시돼요.</div>';
   } else {
     subListEl.innerHTML = subscriptions.map(s=>{
-      const paidTx = transactions.filter(t=>t.category===s.name);
+      const paidTx = transactions.filter(t=>t.title===s.name+' 구독료');
       const paidAmt = paidTx.reduce((sum,t)=>sum+(Number(t.amount)||0),0);
       const round = paidTx.length;
+      const catBadge = s.category ? `<span class="badge" style="background:${hashColorBg(s.category)};color:${hashColor(s.category)}">${escapeHtml(s.category)}</span>` : '';
       return `
         <div class="sub-card ${s.active?'':'cancelled'}" onclick="filterByTag('${encodeURIComponent(s.name)}')">
-          <div class="sav-top sub-top"><span class="name">${escapeHtml(s.name)}${s.active?'':' (해지됨)'}</span><span class="round">${round}회 결제</span></div>
+          <div class="sav-top sub-top"><span class="name">${escapeHtml(s.name)}${s.active?'':' (해지됨)'}${catBadge}</span><span class="round">${round}회 결제</span></div>
           <div class="sav-meta">매달 ${s.day}일 · 월 ${fmt(s.amount)} ${s.active?'':'· 해지일 '+s.cancelDate}</div>
           <div class="sav-amt">누적 ${fmt(paidAmt)}</div>
         </div>`;
     }).join('');
   }
 
-  // 지출 그래프
+  // 지출 그래프 (적금 제외, 원형)
   const chartBox = document.getElementById('chartBox');
   const spendMap = {};
   transactions.forEach(t=>{
-    if((t.date||'').slice(0,7)===ym){
+    if((t.date||'').slice(0,7)===ym && !isSavingsName(t.category)){
       const key = t.category || '미분류';
       spendMap[key] = (spendMap[key]||0) + (Number(t.amount)||0);
     }
   });
-  const entries = Object.entries(spendMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  if(entries.length===0){
+  const chartEntries = Object.entries(spendMap).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(chartEntries.length===0){
     chartBox.innerHTML = '<div class="empty" style="border:none;padding:12px;margin:0;">이 달의 지출 내역이 없어요.</div>';
   } else {
-    const max = entries[0][1];
-    chartBox.innerHTML = entries.map(([cat,amt])=>`
-      <div class="chart-row">
-        <div class="clabel">${escapeHtml(cat)}</div>
-        <div class="ctrack"><div class="cfill" style="width:${Math.max(4,(amt/max)*100)}%;background:${hashColor(cat)};"></div></div>
-        <div class="camt">${fmt(amt)}</div>
+    const total = chartEntries.reduce((s,[,v])=>s+v,0);
+    let acc = 0;
+    const stops = chartEntries.map(([cat,amt])=>{
+      const start = acc/total*360; acc += amt; const end = acc/total*360;
+      return `${hashColor(cat)} ${start}deg ${end}deg`;
+    }).join(', ');
+    const legend = chartEntries.map(([cat,amt])=>`
+      <div class="donut-legend-row">
+        <span class="legend-dot" style="background:${hashColor(cat)}"></span>
+        <span class="legend-name">${escapeHtml(cat)}</span>
+        <span class="legend-pct">${Math.round(amt/total*100)}%</span>
+        <span class="legend-amt mono">${fmt(amt)}</span>
       </div>`).join('');
+    chartBox.innerHTML = `
+      <div class="donut-wrap">
+        <div class="donut" style="background:conic-gradient(${stops})">
+          <div class="donut-hole"><div class="donut-total mono">${fmt(total)}</div><div class="donut-total-label">합계</div></div>
+        </div>
+        <div class="donut-legend">${legend}</div>
+      </div>`;
   }
 
   // 카테고리 선택 옵션 (히든 select + 칩)
@@ -783,8 +812,8 @@ function render(){
   // 태그 필터 배너
   const banner = document.getElementById('tagBanner');
   if(tagFilter){
-    const tagAmt = transactions.filter(t=>t.category===tagFilter).reduce((s,t)=>s+(Number(t.amount)||0),0);
-    const tagCnt = transactions.filter(t=>t.category===tagFilter).length;
+    const tagAmt = transactions.filter(t=>matchesTag(t,tagFilter)).reduce((s,t)=>s+(Number(t.amount)||0),0);
+    const tagCnt = transactions.filter(t=>matchesTag(t,tagFilter)).length;
     banner.style.display = 'flex';
     document.getElementById('tagBannerText').textContent = `🏷 "${tagFilter}" · 총 ${tagCnt}건 · 지출 합계 ${fmt(tagAmt)}`;
   } else {
@@ -795,7 +824,7 @@ function render(){
 
   // 내역 목록
   const filtered = transactions
-    .filter(t => tagFilter ? t.category===tagFilter : ((t.date||'').slice(0,7)===ym))
+    .filter(t => tagFilter ? matchesTag(t,tagFilter) : ((t.date||'').slice(0,7)===ym))
     .filter(t => !unsettledOnly || !t.settled)
     .sort((a,b)=> (b.date||'').localeCompare(a.date||'') || (b.id-a.id));
 
@@ -1083,10 +1112,15 @@ async function removeSavings(encodedName){
 }
 
 // 구독 관리
+function subCategoryOptionsHtml(selected){
+  return '<option value="">미분류</option>' + categories
+    .map(c=>`<option value="${escapeHtml(c.category)}" ${c.category===selected?'selected':''}>${escapeHtml(c.category)}</option>`).join('');
+}
 function openSubManage(){
   if(!checkSetup()) return;
   renderSubManage();
   document.getElementById('newSubStart').value = todayStr();
+  document.getElementById('newSubCategory').innerHTML = subCategoryOptionsHtml('');
   document.getElementById('subOverlay').classList.add('open');
 }
 function closeSubManage(){
@@ -1113,6 +1147,8 @@ function renderSubManage(){
         <div><label>월 결제액</label><input class="mono" type="number" value="${s.amount}" onchange="updateSubscription('${encodeURIComponent(s.name)}','amount',this.value)"></div>
         <div><label>결제일</label><input type="number" min="1" max="31" value="${s.day}" onchange="updateSubscription('${encodeURIComponent(s.name)}','day',this.value)"></div>
       </div>
+      <label>카테고리</label>
+      <select onchange="updateSubscription('${encodeURIComponent(s.name)}','category',this.value)">${subCategoryOptionsHtml(s.category||'')}</select>
       <div style="font-size:.7rem;color:var(--ink-soft);margin-top:6px;">시작일: ${s.startDate}${s.active?'':' · 해지일: '+s.cancelDate}</div>
     </div>
   `).join('');
@@ -1122,12 +1158,13 @@ async function addSubscription(){
   const amount = Number(document.getElementById('newSubAmount').value) || 0;
   const day = Math.min(31, Math.max(1, Number(document.getElementById('newSubDay').value) || 1));
   const startDate = document.getElementById('newSubStart').value || todayStr();
+  const category = document.getElementById('newSubCategory').value || '';
   if(!name || !amount){ showToast('이름과 결제액을 입력해주세요'); return; }
   if(salary.amount>0){
     const remain = (Number(salary.amount)||0) - totalAllocated(null);
     if(amount > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); return; }
   }
-  await post({action:'setSubscription', name, amount, day, startDate, active:true, cancelDate:''});
+  await post({action:'setSubscription', name, amount, day, startDate, active:true, cancelDate:'', category});
   await loadData();
   renderSubManage();
   document.getElementById('newSubName').value=''; document.getElementById('newSubAmount').value=''; document.getElementById('newSubDay').value='';
@@ -1141,7 +1178,7 @@ async function updateSubscription(encodedName, field, value){
     const remain = (Number(salary.amount)||0) - totalAllocated(name);
     if(Number(value) > remain){ showToast(`예산 초과! 배정 가능한 금액은 ${fmt(remain)}이에요`); renderSubManage(); return; }
   }
-  const payload = { action:'setSubscription', name, amount:existing.amount, day:existing.day, startDate:existing.startDate, active:existing.active, cancelDate:existing.cancelDate||'' };
+  const payload = { action:'setSubscription', name, amount:existing.amount, day:existing.day, startDate:existing.startDate, active:existing.active, cancelDate:existing.cancelDate||'', category:existing.category||'' };
   payload[field] = (field==='amount'||field==='day') ? Number(value) : value;
   await post(payload);
   await loadData();
@@ -1152,7 +1189,7 @@ async function toggleSubscriptionActive(encodedName, newActive){
   const existing = subscriptions.find(s=>s.name===name);
   if(!existing) return;
   const payload = { action:'setSubscription', name, amount:existing.amount, day:existing.day, startDate:existing.startDate,
-    active:newActive, cancelDate: newActive ? '' : todayStr() };
+    active:newActive, cancelDate: newActive ? '' : todayStr(), category:existing.category||'' };
   await post(payload);
   await loadData();
   renderSubManage();
